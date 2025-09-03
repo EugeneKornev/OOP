@@ -34,7 +34,7 @@ public class HeapSort {
 
     /**
      * Transforms a subtree into a heap
-     * 
+     *
      * @param arr the array
      * @param n heap size
      * @param i root index
