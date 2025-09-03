@@ -1,5 +1,6 @@
-
-/** Class implementing the Heap Sort algorithm*/
+/**
+ * Class implementing the Heap Sort algorithm.
+ */
 public class HeapSort {
 
     /**
@@ -10,6 +11,7 @@ public class HeapSort {
 
     /**
      * Sorts an array using heap sort algorithm
+     *
      * @param arr the array to be sorted
      */
     public static void sort(int[] arr) {
@@ -32,6 +34,7 @@ public class HeapSort {
 
     /**
      * Transforms a subtree into a heap
+     * 
      * @param arr the array
      * @param n heap size
      * @param i root index

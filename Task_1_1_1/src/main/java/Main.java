@@ -1,18 +1,20 @@
 import java.util.Arrays;
 
 /**
- * Main class demonstrating heap sort functionality
+ * Main class demonstrating heap sort functionality.
  */
 public class Main {
 
     /**
-     * Private constructor to prevent instantiation
+     * Private constructor to prevent instantiation.
      */
     private Main() {
+        // Utility class - no instantiation needed
     }
 
     /**
-     * Application entry point
+     * Application entry point.
+     *
      * @param args command line arguments
      */
     public static void main(String[] args) {
