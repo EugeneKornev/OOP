@@ -4,18 +4,20 @@
 public class HeapSort {
 
     /**
-     * Private constructor to prevent instantiation
+     * Private constructor to prevent instantiation.
      */
     private HeapSort() {
     }
 
     /**
-     * Sorts an array using heap sort algorithm
+     * Sorts an array using heap sort algorithm.
      *
      * @param arr the array to be sorted
      */
     public static void sort(int[] arr) {
-        if (arr == null || arr.length <= 1) return;
+        if (arr == null || arr.length <= 1) {
+            return;
+        }
 
         int n = arr.length;
 
@@ -33,7 +35,7 @@ public class HeapSort {
     }
 
     /**
-     * Transforms a subtree into a heap
+     * Transforms a subtree into a heap.
      *
      * @param arr the array
      * @param n heap size
