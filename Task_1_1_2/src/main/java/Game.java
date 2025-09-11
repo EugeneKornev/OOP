@@ -39,11 +39,12 @@ public class Game {
     }
 
     /**
-     * Prints the current status of the game, showing the player's hand and the dealer's visible card.
+     * Prints the current status of the game, showing
+     * the player's hand and the dealer's visible card.
      */
     private void printStatus() {
-        System.out.println("Player's hand: " + player.getHand().getCards() +
-                " | Total: " + player.getHand().calculateTotal());
+        System.out.println("Player's hand: " + player.getHand().getCards()
+                 + " | Total: " + player.getHand().calculateTotal());
         System.out.println("Dealer's hand: [HIDDEN, "
                 + dealer.getHand().getCards().get(1) + "]");
     }
