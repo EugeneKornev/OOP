@@ -19,11 +19,13 @@ public class Dealer extends Player {
      */
     public void makeDecision(Deck deck) {
         System.out.println("Dealer's turn:");
-        System.out.println("Dealer's hand: " + hand.getCards() + " | Total: " + hand.calculateTotal());
+        System.out.println("Dealer's hand: " + hand.getCards() + " | Total: "
+                + hand.calculateTotal());
         while (hand.calculateTotal() < 17) {
             System.out.println("Dealer hits.");
             takeCard(deck.dealCard());
-            System.out.println("Dealer's hand: " + hand.getCards() + " | Total: " + hand.calculateTotal());
+            System.out.println("Dealer's hand: " + hand.getCards() + " | Total: "
+                    + hand.calculateTotal());
             if (isBusted()) {
                 System.out.println("Dealer busted!");
                 break;

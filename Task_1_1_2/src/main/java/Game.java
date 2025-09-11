@@ -42,8 +42,10 @@ public class Game {
      * Prints the current status of the game, showing the player's hand and the dealer's visible card.
      */
     private void printStatus() {
-        System.out.println("Player's hand: " + player.getHand().getCards() + " | Total: " + player.getHand().calculateTotal());
-        System.out.println("Dealer's hand: [HIDDEN, " + dealer.getHand().getCards().get(1) + "]");
+        System.out.println("Player's hand: " + player.getHand().getCards() +
+                " | Total: " + player.getHand().calculateTotal());
+        System.out.println("Dealer's hand: [HIDDEN, "
+                + dealer.getHand().getCards().get(1) + "]");
     }
 
     /**
@@ -74,7 +76,8 @@ public class Game {
                 int playerTotal = player.getHand().calculateTotal();
                 int dealerTotal = dealer.getHand().calculateTotal();
 
-                System.out.println("Player's total: " + playerTotal + " | Dealer's total: " + dealerTotal);
+                System.out.println("Player's total: " + playerTotal
+                        + " | Dealer's total: " + dealerTotal);
 
                 if (player.isBusted()) {
                     System.out.println("Dealer wins.");

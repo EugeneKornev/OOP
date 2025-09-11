@@ -70,7 +70,8 @@ public class Player {
      */
     public void makeDecision(Deck deck, Scanner scanner) {
         while (true) {
-            System.out.println("Your hand: " + hand.getCards() + " | Total: " + hand.calculateTotal());
+            System.out.println("Your hand: " + hand.getCards() + " | Total: "
+                    + hand.calculateTotal());
             System.out.print("Do you want to (h)it or (s)tand? ");
             String input = scanner.nextLine().trim().toLowerCase();
             if (input.equals("h")) {
