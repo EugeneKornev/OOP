@@ -1,8 +1,11 @@
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
- * Test class for Game functionality
+ * Test class for Game functionality.
  */
 public class GameTest {
 
