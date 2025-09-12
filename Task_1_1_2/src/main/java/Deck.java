@@ -46,4 +46,33 @@ public class Deck {
         }
         return cards.get(currentIndex++);
     }
+
+    /**
+     * Returns the current index position in the deck.
+     *
+     * @return the current index position in the deck
+     */
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    /**
+     * Returns the list of cards in the hand.
+     *
+     * @return the list of {@link Card} objects representing the cards in the hand
+     */
+    public List<Card> getCards() {
+        return this.cards;
+    }
+
+    /**
+     * Sets the cards in the deck to the specified list and resets
+     * the current index to 0.
+     *
+     * @param cards the list of cards to set in the deck
+     */
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+        currentIndex = 0;
+    }
 }

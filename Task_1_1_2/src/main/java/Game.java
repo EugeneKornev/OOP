@@ -5,7 +5,7 @@ import java.util.Scanner;
  * Manages the game flow, rounds, and determines the winner.
  */
 public class Game {
-    private Deck deck;
+    protected Deck deck;
     private Player player;
     private Dealer dealer;
     private Scanner scanner;
@@ -44,7 +44,7 @@ public class Game {
      */
     private void printStatus() {
         System.out.println("Player's hand: " + player.getHand().getCards()
-                 + " | Total: " + player.getHand().calculateTotal());
+                + " | Total: " + player.getHand().calculateTotal());
         System.out.println("Dealer's hand: [HIDDEN, "
                 + dealer.getHand().getCards().get(1) + "]");
     }
@@ -99,7 +99,7 @@ public class Game {
                 break;
             }
         }
-        scanner.close();
+
     }
 
     /**
@@ -130,5 +130,14 @@ public class Game {
     public static void main(String[] args) {
         Game game = new Game();
         game.start();
+    }
+
+    /**
+     * Returns the deck instance of the game.
+     *
+     * @return the Deck object representing the game's card deck
+     */
+    public Deck getDeck() {
+        return deck;
     }
 }

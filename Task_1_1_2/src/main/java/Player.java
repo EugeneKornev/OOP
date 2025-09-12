@@ -65,7 +65,7 @@ public class Player {
     /**
      * Allows the player to make a decision to hit or stand.
      *
-     * @param deck the deck to draw cards from
+     * @param deck    the deck to draw cards from
      * @param scanner the Scanner object for user input
      */
     public void makeDecision(Deck deck, Scanner scanner) {
