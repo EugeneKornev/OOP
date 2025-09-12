@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 /**
@@ -25,7 +26,9 @@ class DeckTest {
     @Test
     void dealCardThrowsWhenEmpty() {
         Deck deck = new Deck(1);
-        for (int i = 0; i < 52; i++) deck.dealCard();
+        for (int i = 0; i < 52; i++) {
+            deck.dealCard();
+        }
         assertThrows(IllegalStateException.class, deck::dealCard);
     }
 }
