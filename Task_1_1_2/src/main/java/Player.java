@@ -77,7 +77,9 @@ public class Player {
             if (input.equals("h")) {
                 takeCard(deck.dealCard());
                 if (isBusted()) {
-                    System.out.println("You busted with total: " + hand.calculateTotal());
+                    System.out.println("Your hand is now: " + hand.getCards() +
+                            " | Total: " + hand.calculateTotal());
+                    System.out.println("You busted!");
                     break;
                 }
             } else if (input.equals("s")) {

@@ -6,6 +6,7 @@ import java.util.List;
  */
 public class Hand {
     private List<Card> cards;
+    static final int boundary = 21;
 
     /**
      * Constructs an empty hand.
@@ -34,11 +35,11 @@ public class Hand {
         int aceCount = 0;
         for (Card card : cards) {
             total += card.getValue();
-            if (card.getValue() == 11) {
+            if (card.getRank().value == 11) {
                 aceCount++;
             }
         }
-        while (total > 21 && aceCount > 0) {
+        while (total > boundary && aceCount > 0) {
             total -= 10;
             aceCount--;
         }

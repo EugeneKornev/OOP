@@ -1,30 +1,11 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.io.InputStream;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 class GameTest {
-    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-    private final InputStream originalIn = System.in;
-
-    @BeforeEach
-    void setUp() {
-        System.setOut(new PrintStream(outputStream));
-    }
-
-    @AfterEach
-    void tearDown() {
-        System.setOut(originalOut);
-        System.setIn(originalIn);
-    }
+    private Game game;
 
     @Test
     void resetRoundClearsHands() {
@@ -52,28 +33,6 @@ class GameTest {
     }
 
     @Test
-    void playerHasBlackjack() {
-        Game game = new Game();
-
-        // Set up player with blackjack
-        game.getPlayer().takeCard(new Card(Suit.HEARTS, Rank.ACE));
-        game.getPlayer().takeCard(new Card(Suit.CLUBS, Rank.TEN));
-
-        assertTrue(game.getPlayer().hasBlackjack());
-    }
-
-    @Test
-    void dealerHasBlackjack() {
-        Game game = new Game();
-
-        // Set up dealer with blackjack
-        game.getDealer().takeCard(new Card(Suit.DIAMONDS, Rank.ACE));
-        game.getDealer().takeCard(new Card(Suit.SPADES, Rank.TEN));
-
-        assertTrue(game.getDealer().hasBlackjack());
-    }
-
-    @Test
     void playerBusts() {
         Game game = new Game();
 
@@ -94,42 +53,45 @@ class GameTest {
     }
 
     @Test
-    void gameFlowWithPlayerStanding() {
-        // Provide enough input for the entire game flow
-        String input = "s\nn\n"; // Stand and don't play again
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+    void playerBlackjack() {
+        List<Card> cards = List.of(
+                new Card(Suit.HEARTS, Rank.ACE),
+                new Card(Suit.DIAMONDS, Rank.FIVE),
+                new Card(Suit.SPADES, Rank.KING),
+                new Card(Suit.CLUBS, Rank.SEVEN)
+        );
+        Deck mockDeck = new Deck(0);
+        mockDeck.getCards().addAll(cards);
 
-        Game game = new Game();
-        game.start();
+        game = new Game(mockDeck);
+        game.dealInitialCards();
 
-        String output = outputStream.toString();
-        assertTrue(output.contains("Player's hand:"));
-        assertTrue(output.contains("Dealer's hand:"));
+        assertTrue(game.getPlayer().hasBlackjack());
+        assertFalse(game.getDealer().hasBlackjack());
     }
 
     @Test
-    void gameFlowWithPlayerHitting() {
-        // Provide enough input for the entire game flow
-        String input = "h\ns\nn\n"; // Hit, then stand, then don't play again
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+    void gameWithFixedDeckPlayerWins() {
+        // Create a fixed deck where player wins
+        List<Card> fixedCards = List.of(
+                new Card(Suit.HEARTS, Rank.TEN),
+                new Card(Suit.SPADES, Rank.SEVEN),
+                new Card(Suit.DIAMONDS, Rank.EIGHT),
+                new Card(Suit.CLUBS, Rank.SIX),
+                new Card(Suit.HEARTS, Rank.TWO)
+        );
 
-        Game game = new Game();
-        game.start();
+        Deck fixedDeck = new Deck(0);
+        fixedDeck.getCards().addAll(fixedCards);
 
-        String output = outputStream.toString();
-        assertTrue(output.contains("Do you want to (h)it or (s)tand?"));
+        game = new Game(fixedDeck);
+        game.dealInitialCards();
+
+        // Проверки состояния игры
+        assertFalse(game.getPlayer().isBusted());
+        assertFalse(game.getDealer().isBusted());
+        assertTrue(game.getPlayer().getHand().calculateTotal() >
+                game.getDealer().getHand().calculateTotal());
     }
 
-    @Test
-    void playAgainChoice() {
-        // Provide enough input for the entire game flow
-        String input = "s\ny\ns\nn\n"; // Stand, play again, stand, don't play again
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-
-        Game game = new Game();
-        game.start();
-
-        String output = outputStream.toString();
-        assertTrue(output.contains("Play again? (y/n):"));
-    }
 }

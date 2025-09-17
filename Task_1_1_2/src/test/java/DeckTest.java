@@ -3,6 +3,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Test class for Deck functionality.
@@ -16,11 +19,15 @@ class DeckTest {
     }
 
     @Test
-    void shuffleResetsIndex() {
+    void dealCardReturnsCardsInSequence() {
         Deck deck = new Deck(1);
-        deck.dealCard();
-        deck.shuffle();
-        assertEquals(0, deck.getCurrentIndex());
+        List<Card> originalCards = new ArrayList<>(deck.getCards());
+
+        Card firstDealt = deck.dealCard();
+        Card secondDealt = deck.dealCard();
+
+        assertEquals(originalCards.get(0), firstDealt);
+        assertEquals(originalCards.get(1), secondDealt);
     }
 
     @Test

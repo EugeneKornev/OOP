@@ -2,8 +2,8 @@
  * Represents a playing card with a suit and rank.
  */
 public class Card {
-    private Suit suit;
-    private Rank rank;
+    final private Suit suit;
+    final private Rank rank;
 
     /**
      * Constructs a Card with the specified suit and rank.

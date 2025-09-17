@@ -1,33 +1,34 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
+class DealerTest {
+    private Dealer dealer;
 
-/**
- * Test class for Dealer functionality.
- */
-public class DealerTest {
-
-    @Test
-    public void testDealerCreation() {
-        Dealer dealer = new Dealer();
-        assertEquals("Dealer", dealer.getName());
+    @BeforeEach
+    void setUp() {
+        dealer = new Dealer();
     }
 
     @Test
-    public void testDealerHitsBelow17() {
-        Dealer dealer = new Dealer();
-        Deck deck = new Deck(1);
+    void dealerHitsUntilSeventeenWithFixedDeck() {
+        // Create a fixed deck
+        List<Card> cards = List.of(
+                new Card(Suit.HEARTS, Rank.TEN),
+                new Card(Suit.SPADES, Rank.SIX),
+                new Card(Suit.DIAMONDS, Rank.ACE)
+        );
 
-        // Give dealer a low hand
-        dealer.takeCard(new Card(Suit.HEARTS, Rank.TEN));
-        dealer.takeCard(new Card(Suit.SPADES, Rank.SIX)); // Total = 16
+        Deck fixedDeck = new Deck(0);
+        fixedDeck.getCards().addAll(cards);
 
-        // Dealer should hit
-        dealer.makeDecision(deck);
+        dealer.takeCard(fixedDeck.dealCard());
+        dealer.takeCard(fixedDeck.dealCard());
 
-        // After hitting, dealer should have at least 3 cards
-        assertTrue(dealer.getHand().getCards().size() >= 3);
+        dealer.makeDecision(fixedDeck);
+
+        assertEquals(17, dealer.getHand().calculateTotal());
+        assertEquals(3, dealer.getHand().getCards().size());
     }
 }

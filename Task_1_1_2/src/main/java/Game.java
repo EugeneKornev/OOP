@@ -5,7 +5,7 @@ import java.util.Scanner;
  * Manages the game flow, rounds, and determines the winner.
  */
 public class Game {
-    protected Deck deck;
+    public Deck deck;
     private Player player;
     private Dealer dealer;
     private Scanner scanner;
@@ -15,6 +15,19 @@ public class Game {
      */
     public Game() {
         deck = new Deck(1);
+        player = new Player("Player");
+        dealer = new Dealer();
+        scanner = new Scanner(System.in);
+    }
+
+    /**
+     * Constructs a new Blackjack game with a specified deck, player, and dealer.
+     * This is useful for testing with predefined card sequences.
+     *
+     * @param deck the deck to use for the game
+     */
+    public Game(Deck deck) {
+        this.deck = deck;
         player = new Player("Player");
         dealer = new Dealer();
         scanner = new Scanner(System.in);
