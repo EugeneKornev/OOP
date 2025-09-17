@@ -1,8 +1,11 @@
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class GameTest {
     private Game game;
@@ -11,14 +14,11 @@ class GameTest {
     void resetRoundClearsHands() {
         Game game = new Game();
 
-        // Add cards to hands
         game.getPlayer().takeCard(new Card(Suit.HEARTS, Rank.ACE));
         game.getDealer().takeCard(new Card(Suit.DIAMONDS, Rank.TEN));
 
-        // Reset round
         game.resetRound();
 
-        // Verify hands are empty
         assertEquals(0, game.getPlayer().getHand().getCards().size());
         assertEquals(0, game.getDealer().getHand().getCards().size());
     }
@@ -36,7 +36,6 @@ class GameTest {
     void playerBusts() {
         Game game = new Game();
 
-        // Set up player with bust hand
         game.getPlayer().takeCard(new Card(Suit.HEARTS, Rank.TEN));
         game.getPlayer().takeCard(new Card(Suit.DIAMONDS, Rank.TEN));
         game.getPlayer().takeCard(new Card(Suit.CLUBS, Rank.TWO));
@@ -90,8 +89,8 @@ class GameTest {
         // Проверки состояния игры
         assertFalse(game.getPlayer().isBusted());
         assertFalse(game.getDealer().isBusted());
-        assertTrue(game.getPlayer().getHand().calculateTotal() >
-                game.getDealer().getHand().calculateTotal());
+        assertTrue(game.getPlayer().getHand().calculateTotal()
+                > game.getDealer().getHand().calculateTotal());
     }
 
 }
