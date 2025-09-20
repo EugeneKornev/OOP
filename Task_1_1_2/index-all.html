@@ -93,8 +93,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Deals the initial two cards to both the player and the dealer.</div>
 </dd>
-<dt><a href="Game.html#deck" class="member-name-link">deck</a> - Variable in class <a href="Game.html" title="class in Unnamed Package">Game</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="Deck.html" class="type-name-link" title="class in Unnamed Package">Deck</a> - Class in <a href="package-summary.html">Unnamed Package</a></dt>
 <dd>
 <div class="block">Represents a deck of playing cards.</div>
@@ -102,6 +100,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="Deck.html#%3Cinit%3E(int)" class="member-name-link">Deck(int)</a> - Constructor for class <a href="Deck.html" title="class in Unnamed Package">Deck</a></dt>
 <dd>
 <div class="block">Constructs a deck with the specified number of standard 52-card decks.</div>
+</dd>
+<dt><a href="Deck.html#%3Cinit%3E(java.util.List)" class="member-name-link">Deck(List&lt;Card&gt;)</a> - Constructor for class <a href="Deck.html" title="class in Unnamed Package">Deck</a></dt>
+<dd>
+<div class="block">Constructs a deck with a specified cards.</div>
 </dd>
 <dt><a href="Suit.html#DIAMONDS" class="member-name-link">DIAMONDS</a> - Enum constant in enum class <a href="Suit.html" title="enum class in Unnamed Package">Suit</a></dt>
 <dd>&nbsp;</dd>
@@ -132,9 +134,9 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Constructs a new Blackjack game with a specified deck, player, and dealer.</div>
 </dd>
-<dt><a href="Deck.html#getCards()" class="member-name-link">getCards()</a> - Method in class <a href="Deck.html" title="class in Unnamed Package">Deck</a></dt>
+<dt><a href="Game.html#%3Cinit%3E(Deck,java.util.Scanner)" class="member-name-link">Game(Deck, Scanner)</a> - Constructor for class <a href="Game.html" title="class in Unnamed Package">Game</a></dt>
 <dd>
-<div class="block">Returns the list of cards in the hand.</div>
+<div class="block">Constructs a new Blackjack game with a specified deck and custom Scanner.</div>
 </dd>
 <dt><a href="Hand.html#getCards()" class="member-name-link">getCards()</a> - Method in class <a href="Hand.html" title="class in Unnamed Package">Hand</a></dt>
 <dd>
@@ -245,6 +247,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Constructs a player with the specified name.</div>
 </dd>
+<dt><a href="Game.html#playRound()" class="member-name-link">playRound()</a> - Method in class <a href="Game.html" title="class in Unnamed Package">Game</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:Q">Q</h2>
 <dl class="index">
@@ -266,10 +270,6 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="Rank.html#SEVEN" class="member-name-link">SEVEN</a> - Enum constant in enum class <a href="Rank.html" title="enum class in Unnamed Package">Rank</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="Deck.html#shuffle()" class="member-name-link">shuffle()</a> - Method in class <a href="Deck.html" title="class in Unnamed Package">Deck</a></dt>
-<dd>
-<div class="block">Shuffles the deck and resets the current index.</div>
-</dd>
 <dt><a href="Rank.html#SIX" class="member-name-link">SIX</a> - Enum constant in enum class <a href="Rank.html" title="enum class in Unnamed Package">Rank</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="Suit.html#SPADES" class="member-name-link">SPADES</a> - Enum constant in enum class <a href="Suit.html" title="enum class in Unnamed Package">Suit</a></dt>
