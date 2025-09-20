@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,9 +28,19 @@ public class Deck {
     }
 
     /**
+     * Constructs a deck with a specified cards.
+     *
+     * @param cards еhe list of cards objects to initialize the deck with
+     */
+    public Deck(List<Card> cards) {
+        this.cards = new ArrayList<>(cards);
+        currentIndex = 0;
+    }
+
+    /**
      * Shuffles the deck and resets the current index.
      */
-    public void shuffle() {
+    private void shuffle() {
         Collections.shuffle(cards);
         currentIndex = 0;
     }
@@ -45,14 +56,5 @@ public class Deck {
             throw new IllegalStateException("No more cards in the deck");
         }
         return cards.get(currentIndex++);
-    }
-
-    /**
-     * Returns the list of cards in the hand.
-     *
-     * @return the list of {@link Card} objects representing the cards in the hand
-     */
-    public List<Card> getCards() {
-        return this.cards;
     }
 }

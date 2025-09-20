@@ -35,7 +35,7 @@ public class Hand {
         int aceCount = 0;
         for (Card card : cards) {
             total += card.getValue();
-            if (card.getRank().value == 11) {
+            if (card.getRank() == Rank.ACE) {
                 aceCount++;
             }
         }

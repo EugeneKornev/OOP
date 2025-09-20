@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,27 +16,45 @@ class DeckTest {
     @Test
     void deckInitialization() {
         Deck deck = new Deck(1);
-        assertEquals(52, deck.getCards().size());
+        int cardCount = 0;
+        while (true) {
+            try {
+                Card card = deck.dealCard();
+                assertNotNull(card);
+                cardCount++;
+            } catch (IllegalStateException e) {
+                break; // Колода пуста
+            }
+        }
+        assertEquals(52, cardCount);
     }
 
     @Test
     void dealCardReturnsCardsInSequence() {
-        Deck deck = new Deck(1);
-        List<Card> originalCards = new ArrayList<>(deck.getCards());
+        List<Card> testCards = new ArrayList<>();
+        testCards.add(new Card(Suit.HEARTS, Rank.ACE));
+        testCards.add(new Card(Suit.HEARTS, Rank.TWO));
+        testCards.add(new Card(Suit.HEARTS, Rank.THREE));
 
-        Card firstDealt = deck.dealCard();
-        Card secondDealt = deck.dealCard();
+        Deck deck = new Deck(testCards);
 
-        assertEquals(originalCards.get(0), firstDealt);
-        assertEquals(originalCards.get(1), secondDealt);
+        assertEquals(testCards.get(0), deck.dealCard());
+        assertEquals(testCards.get(1), deck.dealCard());
+        assertEquals(testCards.get(2), deck.dealCard());
     }
 
     @Test
     void dealCardThrowsWhenEmpty() {
-        Deck deck = new Deck(1);
-        for (int i = 0; i < 52; i++) {
-            deck.dealCard();
-        }
+        // Создаем колоду с одной картой
+        List<Card> singleCard = new ArrayList<>();
+        singleCard.add(new Card(Suit.HEARTS, Rank.ACE));
+
+        Deck deck = new Deck(singleCard);
+
+        // Раздаем единственную карту
+        deck.dealCard();
+
+        // Проверяем, что следующая попытка раздать карту вызывает исключение
         assertThrows(IllegalStateException.class, deck::dealCard);
     }
 }

@@ -23,8 +23,7 @@ class DealerTest {
                 new Card(Suit.DIAMONDS, Rank.ACE)
         );
 
-        Deck fixedDeck = new Deck(0);
-        fixedDeck.getCards().addAll(cards);
+        Deck fixedDeck = new Deck(cards);
 
         dealer.takeCard(fixedDeck.dealCard());
         dealer.takeCard(fixedDeck.dealCard());

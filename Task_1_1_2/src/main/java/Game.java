@@ -5,32 +5,40 @@ import java.util.Scanner;
  * Manages the game flow, rounds, and determines the winner.
  */
 public class Game {
-    public Deck deck;
-    private Player player;
-    private Dealer dealer;
-    private Scanner scanner;
+    private final Deck deck;
+    private final Player player;
+    private final Dealer dealer;
+    private final Scanner scanner;
 
     /**
      * Constructs a new Blackjack game with a single deck, a player, and a dealer.
+     * Uses System.in for input.
      */
     public Game() {
-        deck = new Deck(1);
-        player = new Player("Player");
-        dealer = new Dealer();
-        scanner = new Scanner(System.in);
+        this(new Deck(1));
     }
 
     /**
      * Constructs a new Blackjack game with a specified deck, player, and dealer.
-     * This is useful for testing with predefined card sequences.
+     * Uses System.in for input.
      *
      * @param deck the deck to use for the game
      */
     public Game(Deck deck) {
+        this(deck, new Scanner(System.in));
+    }
+
+    /**
+     * Constructs a new Blackjack game with a specified deck and custom Scanner.
+     *
+     * @param deck the deck to use for the game
+     * @param scanner the Scanner to use for input
+     */
+    public Game(Deck deck, Scanner scanner) {
         this.deck = deck;
-        player = new Player("Player");
-        dealer = new Dealer();
-        scanner = new Scanner(System.in);
+        this.player = new Player("Player");
+        this.dealer = new Dealer();
+        this.scanner = scanner;
     }
 
     /**
@@ -67,44 +75,7 @@ public class Game {
      */
     public void start() {
         while (true) {
-            resetRound();
-            dealInitialCards();
-
-            System.out.println("\nNew round starts!");
-            printStatus();
-
-            if (player.hasBlackjack() || dealer.hasBlackjack()) {
-                if (player.hasBlackjack() && dealer.hasBlackjack()) {
-                    System.out.println("Both have Blackjack! It's a tie.");
-                } else if (player.hasBlackjack()) {
-                    System.out.println("Blackjack! Player wins!");
-                } else {
-                    System.out.println("Dealer has Blackjack! Dealer wins.");
-                }
-            } else {
-                player.makeDecision(deck, scanner);
-                if (!player.isBusted()) {
-                    dealer.makeDecision(deck);
-                }
-
-                int playerTotal = player.getHand().calculateTotal();
-                int dealerTotal = dealer.getHand().calculateTotal();
-
-                System.out.println("Player's total: " + playerTotal
-                        + " | Dealer's total: " + dealerTotal);
-
-                if (player.isBusted()) {
-                    System.out.println("Dealer wins.");
-                } else if (dealer.isBusted()) {
-                    System.out.println("Player wins!");
-                } else if (playerTotal > dealerTotal) {
-                    System.out.println("Player wins!");
-                } else if (playerTotal < dealerTotal) {
-                    System.out.println("Dealer wins.");
-                } else {
-                    System.out.println("It's a tie.");
-                }
-            }
+            playRound();
 
             System.out.print("Play again? (y/n): ");
             String choice = scanner.nextLine().trim().toLowerCase();
@@ -112,7 +83,47 @@ public class Game {
                 break;
             }
         }
+    }
 
+    protected void playRound() {
+        resetRound();
+        dealInitialCards();
+
+        System.out.println("\nNew round starts!");
+        printStatus();
+
+        if (player.hasBlackjack() || dealer.hasBlackjack()) {
+            if (player.hasBlackjack() && dealer.hasBlackjack()) {
+                System.out.println("Both have Blackjack! It's a tie.");
+            } else if (player.hasBlackjack()) {
+                System.out.println("Blackjack! Player wins!");
+            } else {
+                System.out.println("Dealer has Blackjack! Dealer wins.");
+            }
+            return;
+        }
+
+        player.makeDecision(deck, scanner);
+        if (!player.isBusted()) {
+            dealer.makeDecision(deck);
+        }
+
+        int playerTotal = player.getHand().calculateTotal();
+        int dealerTotal = dealer.getHand().calculateTotal();
+
+        System.out.println("Player's total: " + playerTotal + " | Dealer's total: " + dealerTotal);
+
+        if (player.isBusted()) {
+            System.out.println("Dealer wins.");
+        } else if (dealer.isBusted()) {
+            System.out.println("Player wins!");
+        } else if (playerTotal > dealerTotal) {
+            System.out.println("Player wins!");
+        } else if (playerTotal < dealerTotal) {
+            System.out.println("Dealer wins.");
+        } else {
+            System.out.println("It's a tie.");
+        }
     }
 
     /**
