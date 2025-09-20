@@ -85,6 +85,9 @@ public class Game {
         }
     }
 
+    /**
+     * Executes a single round of Blackjack, including dealing cards, player and dealer decisions,
+     */
     protected void playRound() {
         resetRound();
         dealInitialCards();

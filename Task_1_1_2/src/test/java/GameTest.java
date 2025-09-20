@@ -8,6 +8,10 @@ import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
+
+/**
+ * Test class for Game functionality.
+ */
 class GameTest {
     private Game game;
 
