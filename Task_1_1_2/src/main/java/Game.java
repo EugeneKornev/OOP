@@ -86,9 +86,12 @@ public class Game {
     }
 
     /**
-     * Executes a single round of Blackjack, including dealing cards, player and dealer decisions.
+     * Executes a single round of Blackjack, including dealing cards, player
+     * and dealer decisions, and determines the winner of the round.
+     *
+     * @return String representing the result of the round
      */
-    protected void playRound() {
+    protected String playRound() {
         resetRound();
         dealInitialCards();
 
@@ -98,12 +101,14 @@ public class Game {
         if (player.hasBlackjack() || dealer.hasBlackjack()) {
             if (player.hasBlackjack() && dealer.hasBlackjack()) {
                 System.out.println("Both have Blackjack! It's a tie.");
+                return "tie";
             } else if (player.hasBlackjack()) {
                 System.out.println("Blackjack! Player wins!");
+                return "player_blackjack";
             } else {
                 System.out.println("Dealer has Blackjack! Dealer wins.");
+                return "dealer_blackjack";
             }
-            return;
         }
 
         player.makeDecision(deck, scanner);
@@ -116,17 +121,24 @@ public class Game {
 
         System.out.println("Player's total: " + playerTotal + " | Dealer's total: " + dealerTotal);
 
+        String result;
         if (player.isBusted()) {
             System.out.println("Dealer wins.");
+            result = "dealer_win";
         } else if (dealer.isBusted()) {
             System.out.println("Player wins!");
+            result = "player_win";
         } else if (playerTotal > dealerTotal) {
             System.out.println("Player wins!");
+            result = "player_win";
         } else if (playerTotal < dealerTotal) {
             System.out.println("Dealer wins.");
+            result = "dealer_win";
         } else {
             System.out.println("It's a tie.");
+            result = "tie";
         }
+        return result;
     }
 
     /**
