@@ -10,6 +10,14 @@ public class Game {
     private final Dealer dealer;
     private final Scanner scanner;
 
+    public enum RoundResult {
+        PLAYER_BLACKJACK,
+        DEALER_BLACKJACK,
+        PLAYER_WIN,
+        DEALER_WIN,
+        TIE
+    }
+
     /**
      * Constructs a new Blackjack game with a single deck, a player, and a dealer.
      * Uses System.in for input.
@@ -91,7 +99,7 @@ public class Game {
      *
      * @return String representing the result of the round
      */
-    protected String playRound() {
+    protected RoundResult playRound() {
         resetRound();
         dealInitialCards();
 
@@ -101,13 +109,13 @@ public class Game {
         if (player.hasBlackjack() || dealer.hasBlackjack()) {
             if (player.hasBlackjack() && dealer.hasBlackjack()) {
                 System.out.println("Both have Blackjack! It's a tie.");
-                return "tie";
+                return RoundResult.TIE;
             } else if (player.hasBlackjack()) {
                 System.out.println("Blackjack! Player wins!");
-                return "player_blackjack";
+                return RoundResult.PLAYER_BLACKJACK;
             } else {
                 System.out.println("Dealer has Blackjack! Dealer wins.");
-                return "dealer_blackjack";
+                return RoundResult.DEALER_BLACKJACK;
             }
         }
 
@@ -121,22 +129,22 @@ public class Game {
 
         System.out.println("Player's total: " + playerTotal + " | Dealer's total: " + dealerTotal);
 
-        String result;
+        RoundResult result;
         if (player.isBusted()) {
             System.out.println("Dealer wins.");
-            result = "dealer_win";
+            result = RoundResult.DEALER_WIN;
         } else if (dealer.isBusted()) {
             System.out.println("Player wins!");
-            result = "player_win";
+            result = RoundResult.PLAYER_WIN;
         } else if (playerTotal > dealerTotal) {
             System.out.println("Player wins!");
-            result = "player_win";
+            result = RoundResult.PLAYER_WIN;
         } else if (playerTotal < dealerTotal) {
             System.out.println("Dealer wins.");
-            result = "dealer_win";
+            result = RoundResult.DEALER_WIN;
         } else {
             System.out.println("It's a tie.");
-            result = "tie";
+            result = RoundResult.TIE;
         }
         return result;
     }

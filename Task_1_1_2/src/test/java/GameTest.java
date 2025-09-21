@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Scanner;
+
+import org.ietf.jgss.GSSManager;
 import org.junit.jupiter.api.Test;
 
 
@@ -114,9 +116,9 @@ class GameTest {
         Deck fixedDeck = new Deck(fixedCards);
 
         game = new Game(fixedDeck, new Scanner("s\n"));
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("player_win", result);
+        assertEquals(Game.RoundResult.PLAYER_WIN, result);
         assertFalse(game.getPlayer().isBusted());
         assertFalse(game.getDealer().isBusted());
         assertTrue(game.getPlayer().getHand().calculateTotal()
@@ -144,9 +146,9 @@ class GameTest {
         Scanner scanner = new Scanner(input);
 
         Game game = new Game(deck, scanner);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("dealer_win", result);
+        assertEquals(Game.RoundResult.DEALER_WIN, result);
         assertEquals(18, game.getPlayer().getHand().calculateTotal());
         assertEquals(20, game.getDealer().getHand().calculateTotal());
         assertFalse(game.getPlayer().isBusted());
@@ -170,9 +172,9 @@ class GameTest {
 
         Scanner scanner = new Scanner("s\n");
         Game game = new Game(deck, scanner);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("player_win", result);
+        assertEquals(Game.RoundResult.PLAYER_WIN, result);
         assertEquals(18, game.getPlayer().getHand().calculateTotal());
         assertEquals(17, game.getDealer().getHand().calculateTotal());
         assertFalse(game.getPlayer().isBusted());
@@ -195,9 +197,9 @@ class GameTest {
         Scanner scanner = new Scanner(input);
 
         Game game = new Game(deck, scanner);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("dealer_win", result);
+        assertEquals(Game.RoundResult.DEALER_WIN, result);
         assertEquals(17, game.getPlayer().getHand().calculateTotal());
         assertEquals(20, game.getDealer().getHand().calculateTotal());
         assertFalse(game.getPlayer().isBusted());
@@ -224,9 +226,9 @@ class GameTest {
         Scanner scanner = new Scanner(input);
 
         Game game = new Game(deck, scanner);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("dealer_win", result);
+        assertEquals(Game.RoundResult.DEALER_WIN, result);
         assertTrue(game.getPlayer().isBusted());
         assertEquals(22, game.getPlayer().getHand().calculateTotal());
         assertFalse(game.getPlayer().hasBlackjack());
@@ -249,9 +251,9 @@ class GameTest {
         Deck deck = new Deck(cards);
 
         Game game = new Game(deck, new Scanner("s\n"));
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("tie", result);
+        assertEquals(Game.RoundResult.TIE, result);
         assertEquals(20, game.getPlayer().getHand().calculateTotal());
         assertEquals(20, game.getDealer().getHand().calculateTotal());
         assertFalse(game.getPlayer().isBusted());
@@ -278,9 +280,9 @@ class GameTest {
         Scanner scanner = new Scanner(input);
 
         Game game = new Game(deck, scanner);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("player_win", result);
+        assertEquals(Game.RoundResult.PLAYER_WIN, result);
         assertTrue(game.getDealer().isBusted());
         assertEquals(26, game.getDealer().getHand().calculateTotal());
         assertFalse(game.getPlayer().isBusted());
@@ -302,9 +304,9 @@ class GameTest {
         Deck deck = new Deck(cards);
 
         Game game = new Game(deck);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("player_blackjack", result);
+        assertEquals(Game.RoundResult.PLAYER_BLACKJACK, result);
         assertTrue(game.getPlayer().hasBlackjack());
         assertFalse(game.getDealer().hasBlackjack());
         assertEquals(21, game.getPlayer().getHand().calculateTotal());
@@ -327,9 +329,9 @@ class GameTest {
         Deck deck = new Deck(cards);
 
         Game game = new Game(deck, new Scanner("s\n"));
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("dealer_win", result);
+        assertEquals(Game.RoundResult.DEALER_WIN, result);
         assertEquals(17, game.getPlayer().getHand().calculateTotal());
         assertEquals(20, game.getDealer().getHand().calculateTotal());
         assertFalse(game.getPlayer().isBusted());
@@ -353,9 +355,9 @@ class GameTest {
         Deck deck = new Deck(cards);
 
         Game game = new Game(deck);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("dealer_blackjack", result);
+        assertEquals(Game.RoundResult.DEALER_BLACKJACK, result);
         assertTrue(game.getDealer().hasBlackjack());
         assertFalse(game.getPlayer().hasBlackjack());
         assertEquals(17, game.getPlayer().getHand().calculateTotal());
@@ -378,9 +380,9 @@ class GameTest {
         Deck deck = new Deck(cards);
 
         Game game = new Game(deck, new Scanner("s\n"));
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("tie", result);
+        assertEquals(Game.RoundResult.TIE, result);
         assertTrue(game.getPlayer().hasBlackjack());
         assertTrue(game.getDealer().hasBlackjack());
         assertEquals(21, game.getPlayer().getHand().calculateTotal());
@@ -407,9 +409,9 @@ class GameTest {
         Scanner scanner = new Scanner(input);
 
         Game game = new Game(deck, scanner);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("dealer_win", result);
+        assertEquals(Game.RoundResult.DEALER_WIN, result);
         assertTrue(game.getPlayer().isBusted());
         assertEquals(25, game.getPlayer().getHand().calculateTotal());
         assertFalse(game.getPlayer().hasBlackjack());
@@ -436,9 +438,9 @@ class GameTest {
         Scanner scanner = new Scanner(input);
 
         Game game = new Game(deck, scanner);
-        String result = game.playRound();
+        Game.RoundResult result = game.playRound();
 
-        assertEquals("player_win", result);
+        assertEquals(Game.RoundResult.PLAYER_WIN, result);
         assertTrue(game.getDealer().isBusted());
         assertEquals(22, game.getDealer().getHand().calculateTotal());
         assertFalse(game.getPlayer().isBusted());

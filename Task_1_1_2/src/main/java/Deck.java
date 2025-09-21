@@ -37,7 +37,7 @@ public class Deck {
     }
 
     /**
-     * Shuffles the deck and resets the current index.
+     * Shuffles the deck.
      */
     private void shuffle() {
         Collections.shuffle(cards);
