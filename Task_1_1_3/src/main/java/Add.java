@@ -6,6 +6,7 @@ import java.util.Map;
 public class Add extends BinaryOperation {
     /**
      * Creates a new addition operation.
+     *
      * @param left the left operand
      * @param right the right operand
      */
@@ -29,17 +30,21 @@ public class Add extends BinaryOperation {
         Expression simpleRight = right.simplify();
 
         // 0 + x = x
-        if (simpleLeft instanceof Number && ((Number)simpleLeft).getValue() == 0)
+        if (simpleLeft instanceof Number && ((Number) simpleLeft).getValue() == 0) {
             return simpleRight;
+        }
         // x + 0 = x
-        if (simpleRight instanceof Number && ((Number)simpleRight).getValue() == 0)
+        if (simpleRight instanceof Number && ((Number) simpleRight).getValue() == 0) {
             return simpleLeft;
+        }
         // x + x = 2*x
-        if (simpleLeft.equals(simpleRight))
+        if (simpleLeft.equals(simpleRight)) {
             return new Mul(new Number(2), simpleLeft).simplify();
+        }
         // Constant folding
-        if (simpleLeft instanceof Number && simpleRight instanceof Number)
+        if (simpleLeft instanceof Number && simpleRight instanceof Number) {
             return new Number(simpleLeft.evaluate(null) + simpleRight.evaluate(null));
+        }
 
         return new Add(simpleLeft, simpleRight);
     }

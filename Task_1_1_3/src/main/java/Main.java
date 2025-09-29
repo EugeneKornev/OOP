@@ -1,7 +1,6 @@
-import javax.sound.sampled.AudioSystem;
-import java.net.PasswordAuthentication;
-
+/** Main demonstration class for the mathematical expression system. */
 public class Main {
+    /** Main entry point that demonstrates the complete expression system capabilities. */
     public static void main(String[] args) {
         Expression e = new Add(
                 new Number(3),

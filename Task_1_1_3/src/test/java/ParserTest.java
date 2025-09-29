@@ -1,6 +1,13 @@
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+/**
+ * Test class for Parser functionality.
+ * Tests parsing of expressions with and without parentheses.
+ */
 public class ParserTest {
 
     @Test

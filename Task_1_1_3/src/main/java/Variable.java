@@ -9,6 +9,7 @@ public class Variable extends Expression {
 
     /**
      * Creates a new variable with the specified name.
+     *
      * @param name the variable name
      */
     public Variable(String name) {
@@ -41,7 +42,7 @@ public class Variable extends Expression {
 
     /** Compares two variables for equality by name. */
     public boolean equals(Object obj) {
-        return obj instanceof Variable && ((Variable)obj).name.equals(name);
+        return obj instanceof Variable && ((Variable) obj).name.equals(name);
     }
 
     /** Returns hash code based on the variable name. */
@@ -51,6 +52,7 @@ public class Variable extends Expression {
 
     /**
      * Returns the name of this variable.
+     *
      * @return the variable name
      */
     public String getName() {

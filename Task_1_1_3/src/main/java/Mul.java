@@ -32,20 +32,25 @@ public class Mul extends BinaryOperation {
         Expression simpleRight = right.simplify();
 
         // 0 * x = 0
-        if (simpleLeft instanceof Number && ((Number)simpleLeft).getValue() == 0)
+        if (simpleLeft instanceof Number && ((Number) simpleLeft).getValue() == 0) {
             return new Number(0);
+        }
         // 1 * x = x
-        if (simpleLeft instanceof Number && ((Number)simpleLeft).getValue() == 1)
+        if (simpleLeft instanceof Number && ((Number) simpleLeft).getValue() == 1) {
             return simpleRight;
+        }
         // x * 0 = 0
-        if (simpleRight instanceof Number && ((Number)simpleRight).getValue() == 0)
+        if (simpleRight instanceof Number && ((Number) simpleRight).getValue() == 0) {
             return new Number(0);
+        }
         // x * 1 = x
-        if (simpleRight instanceof Number && ((Number)simpleRight).getValue() == 1)
+        if (simpleRight instanceof Number && ((Number) simpleRight).getValue() == 1) {
             return simpleLeft;
+        }
         // Constant folding
-        if (simpleLeft instanceof Number && simpleRight instanceof Number)
+        if (simpleLeft instanceof Number && simpleRight instanceof Number) {
             return new Number(simpleLeft.evaluate(null) * simpleRight.evaluate(null));
+        }
 
         return new Mul(simpleLeft, simpleRight);
     }

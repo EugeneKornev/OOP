@@ -6,6 +6,7 @@ import java.util.Map;
 public class Sub extends BinaryOperation {
     /**
      * Creates a new subtraction operation.
+     *
      * @param left the left operand
      * @param right the right operand
      */
@@ -29,14 +30,17 @@ public class Sub extends BinaryOperation {
         Expression simpleRight = right.simplify();
 
         // x - 0 = x
-        if (simpleRight instanceof Number && ((Number)simpleRight).getValue() == 0)
+        if (simpleRight instanceof Number && ((Number) simpleRight).getValue() == 0) {
             return simpleLeft;
+        }
         // x - x = 0
-        if (simpleLeft.equals(simpleRight))
+        if (simpleLeft.equals(simpleRight)) {
             return new Number(0);
+        }
         // Constant folding
-        if (simpleLeft instanceof Number && simpleRight instanceof Number)
+        if (simpleLeft instanceof Number && simpleRight instanceof Number) {
             return new Number(simpleLeft.evaluate(null) - simpleRight.evaluate(null));
+        }
 
         return new Sub(simpleLeft, simpleRight);
     }

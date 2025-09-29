@@ -8,6 +8,7 @@ public class Number extends Expression {
 
     /**
      * Creates a new number with the specified value.
+     *
      * @param value the numeric value
      */
     public Number(int value) {
@@ -36,7 +37,7 @@ public class Number extends Expression {
 
     /** Compares two numbers for equality. */
     public boolean equals(Object obj) {
-        return obj instanceof Number && ((Number)obj).value == value;
+        return obj instanceof Number && ((Number) obj).value == value;
     }
 
     /** Returns hash code based on the numeric value. */
@@ -46,6 +47,7 @@ public class Number extends Expression {
 
     /**
      * Returns the numeric value of this constant.
+     *
      * @return the numeric value
      */
     public int getValue() {

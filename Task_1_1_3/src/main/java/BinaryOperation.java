@@ -11,6 +11,7 @@ public abstract class BinaryOperation extends Expression {
 
     /**
      * Creates a new binary operation with given left and right expressions.
+     *
      * @param left the left operand
      * @param right the right operand
      * @param operator the operator symbol
@@ -28,7 +29,9 @@ public abstract class BinaryOperation extends Expression {
 
     /** Compares binary operations for structural equality. */
     public boolean equals(Object obj) {
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         BinaryOperation other = (BinaryOperation) obj;
         return left.equals(other.left) && right.equals(other.right);
     }

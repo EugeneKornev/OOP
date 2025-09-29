@@ -15,11 +15,14 @@ public abstract class Expression {
     /**
      * Evaluates expression with given variable values.
      */
+
     public abstract int evaluate(Map<String, Integer> vars);
     /**
      * Simplifies the expression using algebraic rules.
      */
+
     public abstract Expression simplify();
+
     /**
      * Compares expressions for structural equality.
      */
@@ -33,7 +36,9 @@ public abstract class Expression {
         String[] parts = assignments.split(";");
         for (String part : parts) {
             String[] assignment = part.trim().split("=");
-            if (assignment.length != 2) continue;
+            if (assignment.length != 2) {
+                continue;
+            }
             String varName = assignment[0].trim();
             int value = Integer.parseInt(assignment[1].trim());
             vars.put(varName, value);

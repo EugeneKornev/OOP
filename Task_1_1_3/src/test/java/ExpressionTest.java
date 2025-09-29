@@ -1,6 +1,9 @@
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Base test class for expression tests providing common test data.
+ */
 public class ExpressionTest {
 
     protected Map<String, Integer> createVariables() {

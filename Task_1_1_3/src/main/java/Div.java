@@ -6,6 +6,7 @@ import java.util.Map;
 public class Div extends BinaryOperation {
     /**
      * Creates a new division operation.
+     *
      * @param left the left operand
      * @param right the right operand
      */
@@ -37,17 +38,21 @@ public class Div extends BinaryOperation {
         Expression simpleRight = right.simplify();
 
         // 0 / x = 0
-        if (simpleLeft instanceof Number && ((Number)simpleLeft).getValue() == 0)
+        if (simpleLeft instanceof Number && ((Number) simpleLeft).getValue() == 0) {
             return new Number(0);
+        }
         // x / 1 = x
-        if (simpleRight instanceof Number && ((Number)simpleRight).getValue() == 1)
+        if (simpleRight instanceof Number && ((Number) simpleRight).getValue() == 1) {
             return simpleLeft;
+        }
         // x / x = 1
-        if (simpleLeft.equals(simpleRight))
+        if (simpleLeft.equals(simpleRight)) {
             return new Number(1);
+        }
         // Constant folding
-        if (simpleLeft instanceof Number && simpleRight instanceof Number)
+        if (simpleLeft instanceof Number && simpleRight instanceof Number) {
             return new Number(simpleLeft.evaluate(null) / simpleRight.evaluate(null));
+        }
 
         return new Div(simpleLeft, simpleRight);
     }

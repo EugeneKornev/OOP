@@ -11,6 +11,7 @@ public class Parser {
 
     /** Operator precedence table for expressions without parentheses. */
     private static final Map<String, Integer> OPERATOR_PRECEDENCE = new HashMap<>();
+
     static {
         OPERATOR_PRECEDENCE.put("+", 1);
         OPERATOR_PRECEDENCE.put("-", 1);
@@ -47,15 +48,15 @@ public class Parser {
             throw new IllegalArgumentException("Unexpected end of expression");
         }
 
-        String token = tokens.getFirst();
+        String token = tokens.get(0);
 
         if (token.equals("(")) {
             return parseParenthetical(tokens);
         } else if (token.matches("\\d+")) {
-            tokens.removeFirst();
+            tokens.remove(0);
             return new Number(Integer.parseInt(token));
         } else if (token.matches("\\w+")) {
-            tokens.removeFirst();
+            tokens.remove(0);
             return new Variable(token);
         } else {
             throw new IllegalArgumentException("Unexpected token: " + token);
@@ -64,7 +65,7 @@ public class Parser {
 
     /** Parses expression enclosed in parentheses. */
     private static Expression parseParenthetical(List<String> tokens) {
-        tokens.removeFirst(); // Remove "("
+        tokens.remove(0); // Remove "("
 
         Expression left = parseExpression(tokens);
 
@@ -72,15 +73,15 @@ public class Parser {
             throw new IllegalArgumentException("Expected operator after left expression");
         }
 
-        String operator = tokens.removeFirst();
+        String operator = tokens.remove(0);
 
         Expression right = parseExpression(tokens);
 
-        if (tokens.isEmpty() || !tokens.getFirst().equals(")")) {
-            throw new IllegalArgumentException("Expected ')' but got: " +
-                    (tokens.isEmpty() ? "end of expression" : tokens.getFirst()));
+        if (tokens.isEmpty() || !tokens.get(0).equals(")")) {
+            throw new IllegalArgumentException("Expected ')' but got: "
+                    +  (tokens.isEmpty() ? "end of expression" : tokens.get(0)));
         }
-        tokens.removeFirst(); // Remove ")"
+        tokens.remove(0); // Remove ")"
 
         switch (operator) {
             case "+": return new Add(left, right);
@@ -101,26 +102,37 @@ public class Parser {
     /**
      * Parses expression without parentheses considering operator precedence.
      */
-    private static Expression parseExpressionWithoutParentheses(List<String> tokens, int minPrecedence) {
+    private static Expression parseExpressionWithoutParentheses(List<String> tokens,
+                                                                int minPrecedence) {
         Expression left = parsePrimary(tokens);
 
         while (!tokens.isEmpty()) {
-            String operator = tokens.getFirst();
+            String operator = tokens.get(0);
 
             if (!OPERATOR_PRECEDENCE.containsKey(operator) || OPERATOR_PRECEDENCE.get(operator) < minPrecedence) {
                 break;
             }
 
             int currentPrecedence = OPERATOR_PRECEDENCE.get(operator);
-            tokens.removeFirst(); // Remove operator
+            tokens.remove(0); // Remove operator
 
             Expression right = parseExpressionWithoutParentheses(tokens, currentPrecedence + 1);
 
             switch (operator) {
-                case "+": left = new Add(left, right); break;
-                case "-": left = new Sub(left, right); break;
-                case "*": left = new Mul(left, right); break;
-                case "/": left = new Div(left, right); break;
+                case "+":
+                    left = new Add(left, right);
+                    break;
+                case "-":
+                    left = new Sub(left, right);
+                    break;
+                case "*":
+                    left = new Mul(left, right);
+                    break;
+                case "/":
+                    left = new Div(left, right);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown operator: " + operator);
             }
         }
 
@@ -133,21 +145,21 @@ public class Parser {
             throw new IllegalArgumentException("Unexpected end of expression");
         }
 
-        String token = tokens.getFirst();
+        String token = tokens.get(0);
 
         if (token.equals("(")) {
-            tokens.removeFirst(); // Remove "("
+            tokens.remove(0); // Remove "("
             Expression expr = parseExpressionWithoutParentheses(tokens, 0);
-            if (tokens.isEmpty() || !tokens.getFirst().equals(")")) {
+            if (tokens.isEmpty() || !tokens.get(0).equals(")")) {
                 throw new IllegalArgumentException("Expected ')'");
             }
-            tokens.removeFirst(); // Remove ")"
+            tokens.remove(0); // Remove ")"
             return expr;
         } else if (token.matches("\\d+")) {
-            tokens.removeFirst();
+            tokens.remove(0);
             return new Number(Integer.parseInt(token));
         } else if (token.matches("\\w+")) {
-            tokens.removeFirst();
+            tokens.remove(0);
             return new Variable(token);
         } else {
             throw new IllegalArgumentException("Unexpected token: " + token);
