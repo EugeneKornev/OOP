@@ -32,47 +32,53 @@ public class MulTest extends ExpressionTest {
         // (x*2)' = (1*2 + x*0) = (2+0)
         Expression mul = new Mul(new Variable("x"), new Number(2));
         Expression derivative = mul.derivative("x");
-        assertEquals("((1*2)+(x*0))", derivative.print());
+        Expression expected = new Add(new Mul(new Number(1), new Number(2)), new Mul(new Variable("x"), new Number(0)));
+        assertEquals(expected, derivative);
     }
 
     @Test
-    void testEvaluate() {
+    void testEvaluate() throws WrongAssignmentException {
         Expression mul = new Mul(new Variable("x"), new Number(3));
         Map<String, Integer> vars = createVariables();
         assertEquals(15, mul.evaluate(vars));
     }
 
     @Test
-    void testSimplify() {
+    void testSimplify() throws WrongAssignmentException {
         // 0 * x = 0
         Expression mul1 = new Mul(new Number(0), new Variable("x"));
         Expression simplified1 = mul1.simplify();
         assertInstanceOf(Number.class, simplified1);
-        assertEquals(0, ((Number) simplified1).getValue());
+        Expression expected1 = new Number(0);
+        assertEquals(expected1, simplified1);
 
         // 1 * x = x
         Expression mul2 = new Mul(new Number(1), new Variable("x"));
         Expression simplified2 = mul2.simplify();
         assertInstanceOf(Variable.class, simplified2);
-        assertEquals("x", simplified2.print());
+        Expression expected2 = new Variable("x");
+        assertEquals(expected2, simplified2);
 
         // x * 0 = 0
         Expression mul3 = new Mul(new Variable("x"), new Number(0));
         Expression simplified3 = mul3.simplify();
         assertInstanceOf(Number.class, simplified3);
-        assertEquals(0, ((Number) simplified3).getValue());
+        Expression expected3 = new Number(0);
+        assertEquals(expected3, simplified3);
 
         // x * 1 = x
         Expression mul4 = new Mul(new Variable("x"), new Number(1));
         Expression simplified4 = mul4.simplify();
         assertInstanceOf(Variable.class, simplified4);
-        assertEquals("x", simplified4.print());
+        Expression expected4 = new Variable("x");
+        assertEquals(expected4, simplified4);
 
         // Constant folding
         Expression mul5 = new Mul(new Number(2), new Number(3));
         Expression simplified5 = mul5.simplify();
         assertInstanceOf(Number.class, simplified5);
-        assertEquals(6, ((Number) simplified5).getValue());
+        Expression expected5 = new Number(6);
+        assertEquals(expected5, simplified5);
     }
 
     @Test
@@ -86,7 +92,7 @@ public class MulTest extends ExpressionTest {
     }
 
     @Test
-    void testComplexMultiplication() {
+    void testComplexMultiplication() throws WrongAssignmentException {
         Expression sub = new Mul(
                 new Variable("x"), new Mul(new Variable("y"), new Variable("z"))
         );

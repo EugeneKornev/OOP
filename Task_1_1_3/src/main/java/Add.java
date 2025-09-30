@@ -20,12 +20,12 @@ public class Add extends BinaryOperation {
     }
 
     /** Evaluates by adding left and right expressions. */
-    public int evaluate(Map<String, Integer> vars) {
+    public int evaluate(Map<String, Integer> vars) throws WrongAssignmentException {
         return left.evaluate(vars) + right.evaluate(vars);
     }
 
     /** Simplifies addition using algebraic rules. */
-    public Expression simplify() {
+    public Expression simplify() throws WrongAssignmentException {
         Expression simpleLeft = left.simplify();
         Expression simpleRight = right.simplify();
 

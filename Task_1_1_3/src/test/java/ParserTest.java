@@ -14,42 +14,48 @@ public class ParserTest {
     void testParseNumber() {
         Expression expr = Expression.parse("42");
         assertInstanceOf(Number.class, expr);
-        assertEquals(42, ((Number) expr).getValue());
+        Expression expected = new Number(42);
+        assertEquals(expected, expr);
     }
 
     @Test
     void testParseVariable() {
         Expression expr = Expression.parse("x");
         assertInstanceOf(Variable.class, expr);
-        assertEquals("x", ((Variable) expr).getName());
+        Expression expected = new Variable("x");
+        assertEquals(expected, expr);
     }
 
     @Test
     void testParseAddition() {
         Expression expr = Expression.parse("(2+3)");
         assertInstanceOf(Add.class, expr);
-        assertEquals("(2+3)", expr.print());
+        Expression expected = new Add(new Number(2), new Number(3));
+        assertEquals(expected, expr);
     }
 
     @Test
     void testParseSubtraction() {
         Expression expr = Expression.parse("(5  - a)");
         assertInstanceOf(Sub.class, expr);
-        assertEquals("(5-a)", expr.print());
+        Expression expected = new Sub(new Number(5), new Variable("a"));
+        assertEquals(expected, expr);
     }
 
     @Test
     void testParseMultiplication() {
         Expression expr = Expression.parse("(17 * z)");
         assertInstanceOf(Mul.class, expr);
-        assertEquals("(17*z)", expr.print());
+        Expression expected = new Mul(new Number(17), new Variable("z"));
+        assertEquals(expected, expr);;
     }
 
     @Test
     void testParseDivision() {
         Expression expr = Expression.parse("(138 /  e)");
         assertInstanceOf(Div.class, expr);
-        assertEquals("(138/e)", expr.print());
+        Expression expected = new Div(new Number(138), new Variable("e"));
+        assertEquals(expected, expr);
     }
 
     @Test
@@ -62,7 +68,8 @@ public class ParserTest {
     @Test
     void testParseComplexExpression() {
         Expression expr = Expression.parse("(3+(2*x))");
-        assertEquals("(3+(2*x))", expr.print());
+        Expression expected = new Add(new Number(3), new Mul(new Number(2), new Variable("x")));
+        assertEquals(expected, expr);
     }
 
     @Test
@@ -113,9 +120,11 @@ public class ParserTest {
     }
 
     @Test
-    void testParseExpressionWithoutParenthesesComplexPrecedence() {
+    void testParseExpressionWithoutParenthesesComplexPrecedence() throws WrongAssignmentException {
         Expression expr1 = Parser.parseWithoutParentheses("a + b * c - d / e");
-        assertEquals("((a+(b*c))-(d/e))", expr1.print());
+        Expression expected1= new Sub(new Add(new Variable("a"), new Mul(new Variable("b"),
+                new Variable("c"))), new Div(new Variable("d"), new Variable("e")));
+        assertEquals(expected1, expr1);
 
         Expression expr2 = Parser.parseWithoutParentheses("10 - 5 - 2");
         assertEquals("((10-5)-2)", expr2.print());

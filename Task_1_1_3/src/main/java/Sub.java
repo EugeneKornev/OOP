@@ -20,12 +20,12 @@ public class Sub extends BinaryOperation {
     }
 
     /** Evaluates by subtracting right from left expression. */
-    public int evaluate(Map<String, Integer> vars) {
+    public int evaluate(Map<String, Integer> vars) throws WrongAssignmentException {
         return left.evaluate(vars) - right.evaluate(vars);
     }
 
     /** Simplifies subtraction using algebraic rules. */
-    public Expression simplify() {
+    public Expression simplify() throws WrongAssignmentException {
         Expression simpleLeft = left.simplify();
         Expression simpleRight = right.simplify();
 

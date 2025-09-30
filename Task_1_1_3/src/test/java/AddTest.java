@@ -2,10 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for Add expression type.
@@ -31,12 +28,13 @@ public class AddTest extends ExpressionTest {
     void testDerivative() {
         Expression add = new Add(new Variable("x"), new Number(3));
         Expression derivative = add.derivative("x");
+        Expression expected = new Add(new Number(1), new Number(0));
 
-        assertEquals("(1+0)", derivative.print());
+        assertEquals(expected, derivative);
     }
 
     @Test
-    void testEvaluate() {
+    void testEvaluate() throws WrongAssignmentException {
         Expression add = new Add(new Variable("x"), new Number(3));
         Map<String, Integer> vars = createVariables();
 
@@ -44,29 +42,33 @@ public class AddTest extends ExpressionTest {
     }
 
     @Test
-    void testSimplify() {
+    void testSimplify() throws WrongAssignmentException {
         // x + 0 = x
         Expression add1 = new Add(new Variable("x"), new Number(0));
         Expression simplified1 = add1.simplify();
         assertInstanceOf(Variable.class, simplified1);
-        assertEquals("x", simplified1.print());
+        Expression expected1 = new Variable("x");
+        assertEquals(expected1, simplified1);
 
         // 0 + x = x
         Expression add2 = new Add(new Number(0), new Variable("x"));
         Expression simplified2 = add2.simplify();
         assertInstanceOf(Variable.class, simplified2);
-        assertEquals("x", simplified2.print());
+        Expression expected2 = new Variable("x");
+        assertEquals(expected2, simplified2);
 
         // x + x = 2*x
         Expression add3 = new Add(new Variable("x"), new Variable("x"));
         Expression simplified3 = add3.simplify();
-        assertEquals("(2*x)", simplified3.print());
+        Expression expected3 = new Mul(new Number(2), new Variable("x"));
+        assertEquals(expected3, simplified3);
 
         // Constant folding
         Expression add4 = new Add(new Number(2), new Number(3));
         Expression simplified4 = add4.simplify();
         assertInstanceOf(Number.class, simplified4);
-        assertEquals(5, ((Number) simplified4).getValue());
+        Expression expected4 = new Number(5);
+        assertEquals(expected4, simplified4);
     }
 
     @Test
@@ -80,7 +82,7 @@ public class AddTest extends ExpressionTest {
     }
 
     @Test
-    void testComplexAddition() {
+    void testComplexAddition() throws WrongAssignmentException {
         Expression sub = new Add(
                 new Add(new Variable("x"), new Variable("y")),
                 new Variable("z")

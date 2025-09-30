@@ -45,7 +45,7 @@ public class VariableTest extends ExpressionTest {
     }
 
     @Test
-    void testEvaluate() {
+    void testEvaluate() throws WrongAssignmentException {
         Variable var = new Variable("x");
         Map<String, Integer> vars = createVariables();
 

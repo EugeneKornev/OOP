@@ -1,7 +1,7 @@
 /** Main demonstration class for the mathematical expression system. */
 public class Main {
     /** Main entry point that demonstrates the complete expression system capabilities. */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws WrongAssignmentException {
         Expression e = new Add(
                 new Number(3),
                 new Mul(new Number(2), new Variable("x"))

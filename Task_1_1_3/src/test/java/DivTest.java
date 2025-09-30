@@ -32,12 +32,15 @@ public class DivTest extends ExpressionTest {
     void testDerivative() {
         Expression div = new Div(new Variable("x"), new Number(2));
         Expression derivative = div.derivative("x");
+        Expression expected = new Div(new Sub(new Mul(new Number(1), new Number(2)),
+                new Mul(new Variable("x"), new Number(0))),
+                new Mul(new Number(2), new Number(2)));
 
-        assertEquals("(((1*2)-(x*0))/(2*2))", derivative.print());
+        assertEquals(expected, derivative);
     }
 
     @Test
-    void testEvaluate() {
+    void testEvaluate() throws WrongAssignmentException {
         Expression div = new Div(new Variable("x"), new Number(2));
         Map<String, Integer> vars = createVariables();
 
@@ -55,30 +58,34 @@ public class DivTest extends ExpressionTest {
     }
 
     @Test
-    void testSimplify() {
+    void testSimplify() throws WrongAssignmentException {
         // 0 / x = 0
         Expression div1 = new Div(new Number(0), new Variable("x"));
         Expression simplified1 = div1.simplify();
         assertInstanceOf(Number.class, simplified1);
-        assertEquals(0, ((Number) simplified1).getValue());
+        Expression expected1 = new Number(0);
+        assertEquals(expected1, simplified1);
 
         // x / 1 = x
         Expression div2 = new Div(new Variable("x"), new Number(1));
         Expression simplified2 = div2.simplify();
         assertInstanceOf(Variable.class, simplified2);
-        assertEquals("x", simplified2.print());
+        Expression expected2 = new Variable("x");
+        assertEquals(expected2, simplified2);
 
         // x / x = 1
         Expression div3 = new Div(new Variable("x"), new Variable("x"));
         Expression simplified3 = div3.simplify();
         assertInstanceOf(Number.class, simplified3);
-        assertEquals(1, ((Number) simplified3).getValue());
+        Expression expected3 = new Number(1);
+        assertEquals(expected3, simplified3);
 
         // Constant folding
         Expression div4 = new Div(new Number(6), new Number(2));
         Expression simplified4 = div4.simplify();
         assertInstanceOf(Number.class, simplified4);
-        assertEquals(3, ((Number) simplified4).getValue());
+        Expression expected4 = new Number(3);
+        assertEquals(expected4, simplified4);
     }
 
     @Test
@@ -93,7 +100,7 @@ public class DivTest extends ExpressionTest {
     }
 
     @Test
-    void testComplexDivision() {
+    void testComplexDivision() throws WrongAssignmentException {
         Expression div = new Div(
                 new Div(new Variable("x"), new Variable("y")),
                 new Variable("z")
@@ -107,6 +114,7 @@ public class DivTest extends ExpressionTest {
     @Test
     void testDivisionPrecedenceInParsing() {
         Expression div = Parser.parseWithoutParentheses("x / y / z");
-        assertEquals("((x/y)/z)", div.print());
+        Expression expected = new Div(new Div(new Variable("x"), new Variable("y")), new Variable("z"));
+        assertEquals(expected, div);
     }
 }

@@ -8,20 +8,23 @@ public abstract class Expression {
      * Returns string representation of the expression.
      */
     public abstract String print();
+
     /**
      * Computes derivative with respect to given variable.
      */
     public abstract Expression derivative(String var);
+
     /**
      * Evaluates expression with given variable values.
+     *
+     * @throws WrongAssignmentException if the assignment doesn't contain the correct variable name
      */
+    public abstract int evaluate(Map<String, Integer> vars) throws WrongAssignmentException;
 
-    public abstract int evaluate(Map<String, Integer> vars);
     /**
      * Simplifies the expression using algebraic rules.
      */
-
-    public abstract Expression simplify();
+    public abstract Expression simplify() throws WrongAssignmentException;
 
     /**
      * Compares expressions for structural equality.
@@ -31,7 +34,7 @@ public abstract class Expression {
     /**
      * Evaluates expression with variable assignments from string.
      */
-    public int eval(String assignments) {
+    public int eval(String assignments) throws WrongAssignmentException {
         Map<String, Integer> vars = new HashMap<>();
         String[] parts = assignments.split(";");
         for (String part : parts) {

@@ -64,7 +64,7 @@ public class NumberTest extends ExpressionTest {
     }
 
     @Test
-    void testEvalMethod() {
+    void testEvalMethod() throws WrongAssignmentException {
         Number num = new Number(42);
         int result = num.eval("x = 5; y = 10");
         assertEquals(42, result);

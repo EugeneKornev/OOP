@@ -28,9 +28,9 @@ public class Variable extends Expression {
 
 
     /** Returns value of the variable from the provided map. */
-    public int evaluate(Map<String, Integer> vars) {
+    public int evaluate(Map<String, Integer> vars) throws WrongAssignmentException {
         if (!vars.containsKey(name)) {
-            throw new RuntimeException("Undefined variable: " + name);
+            throw new WrongAssignmentException("Undefined variable: " + name);
         }
         return vars.get(name);
     }

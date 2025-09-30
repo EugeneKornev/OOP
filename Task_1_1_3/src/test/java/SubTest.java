@@ -31,12 +31,13 @@ public class SubTest extends ExpressionTest {
     void testDerivative() {
         Expression sub = new Sub(new Variable("x"), new Number(3));
         Expression derivative = sub.derivative("x");
+        Expression expected = new Sub(new Number(1), new Number(0));
 
-        assertEquals("(1-0)", derivative.print());
+        assertEquals(expected, derivative);
     }
 
     @Test
-    void testEvaluate() {
+    void testEvaluate() throws WrongAssignmentException {
         Expression sub = new Sub(new Variable("x"), new Number(3));
         Map<String, Integer> vars = createVariables();
 
@@ -44,24 +45,27 @@ public class SubTest extends ExpressionTest {
     }
 
     @Test
-    void testSimplify() {
+    void testSimplify() throws WrongAssignmentException {
         // x - 0 = x
         Expression sub1 = new Sub(new Variable("x"), new Number(0));
         Expression simplified1 = sub1.simplify();
         assertInstanceOf(Variable.class, simplified1);
-        assertEquals("x", simplified1.print());
+        Expression expected1 = new Variable(("x"));
+        assertEquals(expected1, simplified1);
 
         // x - x = 0
         Expression sub2 = new Sub(new Variable("x"), new Variable("x"));
         Expression simplified2 = sub2.simplify();
         assertInstanceOf(Number.class, simplified2);
-        assertEquals(0, ((Number) simplified2).getValue());
+        Expression expected2 = new Number(0);
+        assertEquals(expected2, simplified2);
 
         // Constant folding
         Expression sub3 = new Sub(new Number(5), new Number(3));
         Expression simplified3 = sub3.simplify();
         assertInstanceOf(Number.class, simplified3);
-        assertEquals(2, ((Number) simplified3).getValue());
+        Expression expected3 = new Number(2);
+        assertEquals(expected3, simplified3);
 
         // (x + 5) - (x + 5) = 0
         Expression sub4 = new Sub(
@@ -70,7 +74,8 @@ public class SubTest extends ExpressionTest {
         );
         Expression simplified4 = sub4.simplify();
         assertInstanceOf(Number.class, simplified4);
-        assertEquals(0, ((Number) simplified4).getValue());
+        Expression expected4 = new Number(0);
+        assertEquals(expected4, simplified4);
     }
 
     @Test
@@ -85,7 +90,7 @@ public class SubTest extends ExpressionTest {
     }
 
     @Test
-    void testComplexSubtraction() {
+    void testComplexSubtraction() throws WrongAssignmentException {
         Expression sub = new Sub(
                 new Sub(new Variable("x"), new Variable("y")),
                 new Variable("z")
