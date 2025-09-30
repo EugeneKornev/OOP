@@ -122,7 +122,7 @@ public class ParserTest {
     @Test
     void testParseExpressionWithoutParenthesesComplexPrecedence() throws WrongAssignmentException {
         Expression expr1 = Parser.parseWithoutParentheses("a + b * c - d / e");
-        Expression expected1= new Sub(new Add(new Variable("a"), new Mul(new Variable("b"),
+        Expression expected1 = new Sub(new Add(new Variable("a"), new Mul(new Variable("b"),
                 new Variable("c"))), new Div(new Variable("d"), new Variable("e")));
         assertEquals(expected1, expr1);
 

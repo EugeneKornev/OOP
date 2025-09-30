@@ -32,7 +32,8 @@ public class MulTest extends ExpressionTest {
         // (x*2)' = (1*2 + x*0) = (2+0)
         Expression mul = new Mul(new Variable("x"), new Number(2));
         Expression derivative = mul.derivative("x");
-        Expression expected = new Add(new Mul(new Number(1), new Number(2)), new Mul(new Variable("x"), new Number(0)));
+        Expression expected = new Add(new Mul(new Number(1), new Number(2)),
+                new Mul(new Variable("x"), new Number(0)));
         assertEquals(expected, derivative);
     }
 

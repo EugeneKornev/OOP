@@ -51,7 +51,7 @@ public class VariableTest extends ExpressionTest {
 
         assertEquals(5, var.evaluate(vars));
 
-        Exception exception = assertThrows(RuntimeException.class, () -> {
+        Exception exception = assertThrows(WrongAssignmentException.class, () -> {
             var.evaluate(new HashMap<>());
         });
         assertTrue(exception.getMessage().contains("Undefined variable"));

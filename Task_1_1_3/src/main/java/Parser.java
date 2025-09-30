@@ -1,5 +1,9 @@
-import java.util.*;
-import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parser for mathematical expressions.
@@ -102,8 +106,7 @@ public class Parser {
     /**
      * Parses expression without parentheses considering operator precedence.
      */
-    private static Expression parseExpressionWithoutParentheses(List<String> tokens,
-                                                                int minPrecedence) {
+    private static Expression parseExpressionWithoutParentheses(List<String> tokens, int minPrecedence) {
         Expression left = parsePrimary(tokens);
 
         while (!tokens.isEmpty()) {

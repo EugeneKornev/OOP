@@ -28,7 +28,9 @@ public class Div extends BinaryOperation {
     /** Evaluates by dividing left by right expression. */
     public int evaluate(Map<String, Integer> vars) throws WrongAssignmentException {
         int denominator = right.evaluate(vars);
-        if (denominator == 0) throw new ArithmeticException("Division by zero");
+        if (denominator == 0) {
+            throw new ArithmeticException("Division by zero");
+        }
         return left.evaluate(vars) / denominator;
     }
 

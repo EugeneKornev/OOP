@@ -6,6 +6,7 @@ import java.util.Map;
 public class Mul extends BinaryOperation {
     /**
      * Creates a new multiplication operation.
+     *
      * @param left the left operand
      * @param right the right operand
      */
