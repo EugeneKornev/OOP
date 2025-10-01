@@ -24,7 +24,7 @@ public abstract class Expression {
     /**
      * Simplifies the expression using algebraic rules.
      */
-    public abstract Expression simplify() throws WrongAssignmentException;
+    public abstract Expression simplify();
 
     /**
      * Compares expressions for structural equality.
@@ -34,7 +34,7 @@ public abstract class Expression {
     /**
      * Evaluates expression with variable assignments from string.
      */
-    public int eval(String assignments) throws WrongAssignmentException {
+    public int eval(String assignments) {
         Map<String, Integer> vars = new HashMap<>();
         String[] parts = assignments.split(";");
         for (String part : parts) {

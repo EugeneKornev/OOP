@@ -26,7 +26,7 @@ public class Div extends BinaryOperation {
     }
 
     /** Evaluates by dividing left by right expression. */
-    public int evaluate(Map<String, Integer> vars) throws WrongAssignmentException {
+    public int evaluate(Map<String, Integer> vars) {
         int denominator = right.evaluate(vars);
         if (denominator == 0) {
             throw new ArithmeticException("Division by zero");
@@ -35,7 +35,7 @@ public class Div extends BinaryOperation {
     }
 
     /** Simplifies division using algebraic rules. */
-    public Expression simplify() throws WrongAssignmentException {
+    public Expression simplify() {
         Expression simpleLeft = left.simplify();
         Expression simpleRight = right.simplify();
 

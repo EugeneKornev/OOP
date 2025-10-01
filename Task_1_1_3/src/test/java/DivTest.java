@@ -40,7 +40,7 @@ public class DivTest extends ExpressionTest {
     }
 
     @Test
-    void testEvaluate() throws WrongAssignmentException {
+    void testEvaluate() {
         Expression div = new Div(new Variable("x"), new Number(2));
         Map<String, Integer> vars = createVariables();
 
@@ -58,7 +58,7 @@ public class DivTest extends ExpressionTest {
     }
 
     @Test
-    void testSimplify() throws WrongAssignmentException {
+    void testSimplify() {
         // 0 / x = 0
         Expression div1 = new Div(new Number(0), new Variable("x"));
         Expression simplified1 = div1.simplify();
@@ -100,7 +100,7 @@ public class DivTest extends ExpressionTest {
     }
 
     @Test
-    void testComplexDivision() throws WrongAssignmentException {
+    void testComplexDivision() {
         Expression div = new Div(
                 new Div(new Variable("x"), new Variable("y")),
                 new Variable("z")
@@ -113,7 +113,7 @@ public class DivTest extends ExpressionTest {
 
     @Test
     void testDivisionPrecedenceInParsing() {
-        Expression div = Parser.parseWithoutParentheses("x / y / z");
+        Expression div = Expression.parse("x / y / z");
         Expression expected = new Div(new Div(new Variable("x"), new Variable("y")), new Variable("z"));
         assertEquals(expected, div);
     }

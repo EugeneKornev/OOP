@@ -38,14 +38,14 @@ public class MulTest extends ExpressionTest {
     }
 
     @Test
-    void testEvaluate() throws WrongAssignmentException {
+    void testEvaluate() {
         Expression mul = new Mul(new Variable("x"), new Number(3));
         Map<String, Integer> vars = createVariables();
         assertEquals(15, mul.evaluate(vars));
     }
 
     @Test
-    void testSimplify() throws WrongAssignmentException {
+    void testSimplify() {
         // 0 * x = 0
         Expression mul1 = new Mul(new Number(0), new Variable("x"));
         Expression simplified1 = mul1.simplify();
@@ -93,7 +93,7 @@ public class MulTest extends ExpressionTest {
     }
 
     @Test
-    void testComplexMultiplication() throws WrongAssignmentException {
+    void testComplexMultiplication() {
         Expression sub = new Mul(
                 new Variable("x"), new Mul(new Variable("y"), new Variable("z"))
         );

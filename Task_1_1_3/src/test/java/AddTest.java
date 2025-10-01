@@ -34,7 +34,7 @@ public class AddTest extends ExpressionTest {
     }
 
     @Test
-    void testEvaluate() throws WrongAssignmentException {
+    void testEvaluate() {
         Expression add = new Add(new Variable("x"), new Number(3));
         Map<String, Integer> vars = createVariables();
 
@@ -42,7 +42,7 @@ public class AddTest extends ExpressionTest {
     }
 
     @Test
-    void testSimplify() throws WrongAssignmentException {
+    void testSimplify() {
         // x + 0 = x
         Expression add1 = new Add(new Variable("x"), new Number(0));
         Expression simplified1 = add1.simplify();
@@ -82,7 +82,7 @@ public class AddTest extends ExpressionTest {
     }
 
     @Test
-    void testComplexAddition() throws WrongAssignmentException {
+    void testComplexAddition() {
         Expression sub = new Add(
                 new Add(new Variable("x"), new Variable("y")),
                 new Variable("z")

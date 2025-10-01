@@ -13,7 +13,7 @@ public class Parser {
             "\\d+|\\w+|[+\\-*/()]"
     );
 
-    /** Operator precedence table for expressions without parentheses. */
+    /** Operator precedence table. */
     private static final Map<String, Integer> OPERATOR_PRECEDENCE = new HashMap<>();
 
     static {
@@ -23,10 +23,10 @@ public class Parser {
         OPERATOR_PRECEDENCE.put("/", 2);
     }
 
-    /** Parses expression from string with parentheses. */
+    /** Parses expression from string (with or without parentheses). */
     public static Expression parse(String s) {
         List<String> tokens = tokenize(s);
-        Expression result = parseExpression(tokens);
+        Expression result = parseExpression(tokens, 0);
 
         if (!tokens.isEmpty()) {
             throw new IllegalArgumentException("Unexpected tokens remaining: " + tokens);
@@ -46,80 +46,24 @@ public class Parser {
         return tokens;
     }
 
-    /** Parses a single expression from tokens. */
-    private static Expression parseExpression(List<String> tokens) {
-        if (tokens.isEmpty()) {
-            throw new IllegalArgumentException("Unexpected end of expression");
-        }
-
-        String token = tokens.get(0);
-
-        if (token.equals("(")) {
-            return parseParenthetical(tokens);
-        } else if (token.matches("\\d+")) {
-            tokens.remove(0);
-            return new Number(Integer.parseInt(token));
-        } else if (token.matches("\\w+")) {
-            tokens.remove(0);
-            return new Variable(token);
-        } else {
-            throw new IllegalArgumentException("Unexpected token: " + token);
-        }
-    }
-
-    /** Parses expression enclosed in parentheses. */
-    private static Expression parseParenthetical(List<String> tokens) {
-        tokens.remove(0); // Remove "("
-
-        Expression left = parseExpression(tokens);
-
-        if (tokens.isEmpty()) {
-            throw new IllegalArgumentException("Expected operator after left expression");
-        }
-
-        String operator = tokens.remove(0);
-
-        Expression right = parseExpression(tokens);
-
-        if (tokens.isEmpty() || !tokens.get(0).equals(")")) {
-            throw new IllegalArgumentException("Expected ')' but got: "
-                    +  (tokens.isEmpty() ? "end of expression" : tokens.get(0)));
-        }
-        tokens.remove(0); // Remove ")"
-
-        switch (operator) {
-            case "+": return new Add(left, right);
-            case "-": return new Sub(left, right);
-            case "*": return new Mul(left, right);
-            case "/": return new Div(left, right);
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
-        }
-    }
-
-    /** Parses expression from string without requiring parentheses. */
-    public static Expression parseWithoutParentheses(String s) {
-        List<String> tokens = tokenize(s);
-        return parseExpressionWithoutParentheses(tokens, 0);
-    }
-
     /**
-     * Parses expression without parentheses considering operator precedence.
+     * Parses expression considering operator precedence and parentheses.
      */
-    private static Expression parseExpressionWithoutParentheses(List<String> tokens, int minPrecedence) {
+    private static Expression parseExpression(List<String> tokens, int minPrecedence) {
         Expression left = parsePrimary(tokens);
 
         while (!tokens.isEmpty()) {
             String operator = tokens.get(0);
 
-            if (!OPERATOR_PRECEDENCE.containsKey(operator) || OPERATOR_PRECEDENCE.get(operator) < minPrecedence) {
+            if (!OPERATOR_PRECEDENCE.containsKey(operator) ||
+                    OPERATOR_PRECEDENCE.get(operator) < minPrecedence) {
                 break;
             }
 
             int currentPrecedence = OPERATOR_PRECEDENCE.get(operator);
             tokens.remove(0); // Remove operator
 
-            Expression right = parseExpressionWithoutParentheses(tokens, currentPrecedence + 1);
+            Expression right = parseExpression(tokens, currentPrecedence + 1);
 
             switch (operator) {
                 case "+":
@@ -152,9 +96,10 @@ public class Parser {
 
         if (token.equals("(")) {
             tokens.remove(0); // Remove "("
-            Expression expr = parseExpressionWithoutParentheses(tokens, 0);
+            Expression expr = parseExpression(tokens, 0);
             if (tokens.isEmpty() || !tokens.get(0).equals(")")) {
-                throw new IllegalArgumentException("Expected ')'");
+                throw new IllegalArgumentException("Expected ')' but got: " +
+                        (tokens.isEmpty() ? "end of expression" : tokens.get(0)));
             }
             tokens.remove(0); // Remove ")"
             return expr;

@@ -23,12 +23,12 @@ public class Mul extends BinaryOperation {
     }
 
     /** Evaluates by multiplying left and right expressions. */
-    public int evaluate(Map<String, Integer> vars) throws WrongAssignmentException {
+    public int evaluate(Map<String, Integer> vars) {
         return left.evaluate(vars) * right.evaluate(vars);
     }
 
     /** Simplifies multiplication using algebraic rules. */
-    public Expression simplify() throws WrongAssignmentException {
+    public Expression simplify() {
         Expression simpleLeft = left.simplify();
         Expression simpleRight = right.simplify();
 
