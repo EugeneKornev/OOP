@@ -113,11 +113,11 @@ public class ParserTest {
 
     @Test
     void testParseExpressionWithoutParenthesesComplexPrecedence() {
-        Expression expr1 = Parser.parse("a + b * c - d / e");
+        Expression expr1 = Parser.parse("ax + b * c - dh / e");
         Expression expected1 = new Sub(
-                new Add(new Variable("a"),
+                new Add(new Variable("ax"),
                         new Mul(new Variable("b"), new Variable("c"))),
-                new Div(new Variable("d"), new Variable("e")));
+                new Div(new Variable("dh"), new Variable("e")));
         assertEquals(expected1, expr1);
 
         Expression expr2 = Parser.parse("10 - 5 - 2");
