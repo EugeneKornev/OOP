@@ -24,7 +24,6 @@ public class Parser {
         }
 
         List<String> tokens = tokenize(s);
-        System.out.println(tokens); // Для отладки
 
         if (tokens.isEmpty()) {
             throw new IllegalArgumentException("Empty expression");
