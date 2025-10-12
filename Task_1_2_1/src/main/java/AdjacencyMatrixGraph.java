@@ -198,7 +198,9 @@ class AdjacencyMatrixGraph implements Graph {
         int count = 0;
         for (int i = 0; i < vertices.size(); i++) {
             for (int j = 0; j < vertices.size(); j++) {
-                if (matrix[i][j]) count++;
+                if (matrix[i][j]) {
+                    count++;
+                }
             }
         }
         return count;
@@ -253,11 +255,15 @@ class AdjacencyMatrixGraph implements Graph {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Graph)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Graph)) {
+            return false;
+        }
         Graph other = (Graph) obj;
-        return this.getVertices().equals(other.getVertices()) &&
-                this.getEdges().equals(other.getEdges());
+        return this.getVertices().equals(other.getVertices())
+                && this.getEdges().equals(other.getEdges());
     }
 
     /**

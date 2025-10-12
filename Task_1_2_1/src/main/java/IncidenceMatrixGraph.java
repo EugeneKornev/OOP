@@ -1,7 +1,13 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Graph implementation using an incidence matrix.
@@ -251,11 +257,15 @@ class IncidenceMatrixGraph implements Graph {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Graph)) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Graph)) {
+            return false;
+        }
         Graph other = (Graph) obj;
-        return this.getVertices().equals(other.getVertices()) &&
-                this.getEdges().equals(other.getEdges());
+        return this.getVertices().equals(other.getVertices())
+                && this.getEdges().equals(other.getEdges());
     }
 
     /**

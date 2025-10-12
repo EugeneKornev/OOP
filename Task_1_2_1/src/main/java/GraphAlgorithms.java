@@ -1,4 +1,10 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
 
 /**
  * Utility class containing algorithms for working with graphs.
@@ -60,8 +66,9 @@ class GraphAlgorithms {
 
         if (result.size() != graph.getVertexCount()) {
             throw new IllegalArgumentException(
-                    "Graph has a cycle, topological sort not possible. " +
-                            "Processed " + result.size() + " vertices out of " + graph.getVertexCount()
+                    "Graph has a cycle, topological sort not possible. "
+                            + "Processed " + result.size() + " vertices out of "
+                            + graph.getVertexCount()
             );
         }
 

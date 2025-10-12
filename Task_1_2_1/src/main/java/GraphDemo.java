@@ -23,9 +23,9 @@ public class GraphDemo {
             Files.write(Paths.get(filename), lines);
 
             Graph[] graphs = {
-                    new AdjacencyMatrixGraph(),
-                    new IncidenceMatrixGraph(),
-                    new AdjacencyListGraph()
+                new AdjacencyMatrixGraph(),
+                new IncidenceMatrixGraph(),
+                new AdjacencyListGraph()
             };
 
             for (Graph graph : graphs) {

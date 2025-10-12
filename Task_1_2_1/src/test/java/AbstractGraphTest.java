@@ -11,7 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Abstract base class for testing Graph implementations.
@@ -124,15 +126,17 @@ abstract class AbstractGraphTest {
         graph.addEdge("B", "C");
 
         List<String> neighborsA = graph.getNeighbors("A");
-        List<String> neighborsB = graph.getNeighbors("B");
-        List<String> neighborsC = graph.getNeighbors("C");
 
         assertEquals(2, neighborsA.size());
         assertTrue(neighborsA.contains("B"));
         assertTrue(neighborsA.contains("C"));
 
+        List<String> neighborsB = graph.getNeighbors("B");
+
         assertEquals(1, neighborsB.size());
         assertTrue(neighborsB.contains("C"));
+
+        List<String> neighborsC = graph.getNeighbors("C");
 
         assertEquals(0, neighborsC.size());
     }
