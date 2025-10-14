@@ -2,18 +2,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.io.TempDir;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Abstract base class for testing Graph implementations.
@@ -292,5 +288,123 @@ abstract class AbstractGraphTest {
 
         assertNotNull(graph.toString());
         assertFalse(graph.toString().isEmpty());
+    }
+
+    @Test
+    void testVertexRemovalEfficiency() {
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "A");
+        graph.addEdge("D", "A");
+
+        graph.removeVertex("A");
+
+        assertFalse(graph.hasVertex("A"));
+        assertFalse(graph.hasEdge("A", "B"));
+        assertFalse(graph.hasEdge("C", "A"));
+        assertFalse(graph.hasEdge("D", "A"));
+        assertTrue(graph.hasEdge("B", "C"));
+    }
+
+    @Test
+    void testDuplicateEdgePrevention() {
+        graph.addEdge("A", "B");
+        graph.addEdge("A", "B");
+        graph.addEdge("A", "B");
+
+        assertEquals(1, graph.getEdgeCount());
+        assertEquals(2, graph.getVertexCount());
+    }
+
+
+    @Test
+    void testEdgeRemoval() {
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "A");
+
+        assertEquals(3, graph.getEdgeCount());
+
+        graph.removeEdge("B", "C");
+
+        assertEquals(2, graph.getEdgeCount());
+        assertFalse(graph.hasEdge("B", "C"));
+        assertTrue(graph.hasEdge("A", "B"));
+        assertTrue(graph.hasEdge("C", "A"));
+    }
+
+    @Test
+    void testComplexEdgeScenarios() {
+        graph.addEdge("A", "B");
+        graph.addEdge("A", "C");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "D");
+        graph.addEdge("D", "A");
+
+        assertEquals(4, graph.getVertexCount());
+        assertEquals(5, graph.getEdgeCount());
+
+        assertThrows(IllegalArgumentException.class, () -> graph.topologicalSort());
+    }
+
+    @Test
+    void testLargeGraph() {
+        for (int i = 0; i < 10; i++) {
+            graph.addVertex("V" + i);
+        }
+
+        for (int i = 0; i < 9; i++) {
+            graph.addEdge("V" + i, "V" + (i + 1));
+        }
+
+        assertEquals(10, graph.getVertexCount());
+        assertEquals(9, graph.getEdgeCount());
+        assertTrue(graph.hasEdge("V0", "V1"));
+        assertTrue(graph.hasEdge("V8", "V9"));
+    }
+
+    @Test
+    void testMatrixEdgeCases() {
+        graph.addVertex("A");
+        graph.addVertex("B");
+        graph.addEdge("A", "B");
+
+        assertEquals(2, graph.getVertexCount());
+        assertEquals(1, graph.getEdgeCount());
+
+        graph.removeVertex("A");
+
+        assertEquals(1, graph.getVertexCount());
+        assertEquals(0, graph.getEdgeCount());
+        assertFalse(graph.hasEdge("A", "B"));
+    }
+
+    @Test
+    void testComplexMiddleVertexRemoval() {
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("C", "D");
+        graph.addEdge("A", "C");
+        graph.addEdge("B", "D");
+        graph.addEdge("C", "A");
+
+        assertEquals(4, graph.getVertexCount());
+        assertEquals(6, graph.getEdgeCount());
+
+        graph.removeVertex("C");
+
+        assertEquals(3, graph.getVertexCount());
+        assertEquals(2, graph.getEdgeCount());
+
+        assertTrue(graph.hasEdge("A", "B"));
+        assertTrue(graph.hasEdge("B", "D"));
+        assertFalse(graph.hasEdge("A", "C"));
+        assertFalse(graph.hasEdge("B", "C"));
+        assertFalse(graph.hasEdge("C", "D"));
+        assertFalse(graph.hasEdge("C", "A"));
+
+        assertEquals(List.of("B"), graph.getNeighbors("A"));
+        assertEquals(List.of("D"), graph.getNeighbors("B"));
+        assertEquals(List.of(), graph.getNeighbors("D"));
     }
 }

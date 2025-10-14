@@ -38,7 +38,7 @@ class IncidenceMatrixGraph implements Graph {
         if (!vertexIndex.containsKey(vertex)) {
             vertexIndex.put(vertex, vertices.size());
             vertices.add(vertex);
-            resizeMatrix();
+            oldResizeMatrix();
         }
     }
 
@@ -69,14 +69,15 @@ class IncidenceMatrixGraph implements Graph {
             for (int i = 0; i < vertices.size(); i++) {
                 vertexIndex.put(vertices.get(i), i);
             }
-            resizeMatrix();
+            oldResizeMatrix();
         }
     }
+
 
     /**
      * Resizes the incidence matrix when vertices or edges are added or removed.
      */
-    private void resizeMatrix() {
+    private void oldResizeMatrix() {
         int vertexCount = vertices.size();
         int edgeCount = edges.size();
         int[][] newMatrix = new int[vertexCount][edgeCount];
@@ -97,6 +98,30 @@ class IncidenceMatrixGraph implements Graph {
     }
 
     /**
+     * Resizes the incidence matrix when vertices or edges are added or removed.
+     */
+    private void resizeMatrix() {
+        int vertexCount = vertices.size();
+        int edgeCount = edges.size();
+        int[][] newMatrix = new int[vertexCount][edgeCount];
+
+        for (int j = 0; j < edgeCount; j++) {
+            Edge edge = edges.get(j);
+            String source = edge.getSource();
+            String destination = edge.getDestination();
+
+            if (vertexIndex.containsKey(source) && vertexIndex.containsKey(destination)) {
+                int srcIndex = vertexIndex.get(source);
+                int destIndex = vertexIndex.get(destination);
+                newMatrix[srcIndex][j] = 1;
+                newMatrix[destIndex][j] = -1;
+            }
+        }
+
+        matrix = newMatrix;
+    }
+
+    /**
      * Adds a directed edge from the source vertex to the destination vertex.
      *
      * @param source the source vertex of the edge
@@ -110,7 +135,7 @@ class IncidenceMatrixGraph implements Graph {
         Edge edge = new Edge(source, destination);
         if (!edges.contains(edge)) {
             edges.add(edge);
-            resizeMatrix();
+            oldResizeMatrix();
         }
     }
 
@@ -124,7 +149,7 @@ class IncidenceMatrixGraph implements Graph {
     public void removeEdge(String source, String destination) {
         Edge edge = new Edge(source, destination);
         if (edges.remove(edge)) {
-            resizeMatrix();
+            oldResizeMatrix();
         }
     }
 

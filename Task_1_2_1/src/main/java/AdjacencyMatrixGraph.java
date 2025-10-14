@@ -75,6 +75,46 @@ class AdjacencyMatrixGraph implements Graph {
     }
 
     /**
+     * Resizes the adjacency matrix when vertices are added.
+     */
+    private void resizeMatrixForAddition() {
+        int size = vertices.size();
+        boolean[][] newMatrix = new boolean[size][size];
+
+        // Copy existing connections to the new matrix
+        for (int i = 0; i < Math.min(size, matrix.length); i++) {
+            System.arraycopy(matrix[i], 0, newMatrix[i], 0, Math.min(size, matrix[i].length));
+        }
+        matrix = newMatrix;
+    }
+
+
+    /**
+     * Resizes the adjacency matrix when vertices are removed.
+     */
+    private void resizeMatrixForRemoval(Map<String, Integer> oldVertexIndex) {
+        int newSize = vertices.size();
+        boolean[][] newMatrix = new boolean[newSize][newSize];
+
+        for (int i = 0; i < newSize; i++) {
+            String currentVertex = vertices.get(i);
+            Integer oldRowIndex = oldVertexIndex.get(currentVertex);
+
+            if (oldRowIndex != null) {
+                for (int j = 0; j < newSize; j++) {
+                    String neighborVertex = vertices.get(j);
+                    Integer oldColIndex = oldVertexIndex.get(neighborVertex);
+
+                    if (oldColIndex != null && oldRowIndex < matrix.length && oldColIndex < matrix.length) {
+                        newMatrix[i][j] = matrix[oldRowIndex][oldColIndex];
+                    }
+                }
+            }
+        }
+        matrix = newMatrix;
+    }
+
+    /**
      * Adds a directed edge from the source vertex to the destination vertex.
      * If the edge already exists, the operation is ignored.
      *
