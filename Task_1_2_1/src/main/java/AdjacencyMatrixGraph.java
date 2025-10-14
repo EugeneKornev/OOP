@@ -36,7 +36,7 @@ class AdjacencyMatrixGraph implements Graph {
         if (!vertexIndex.containsKey(vertex)) {
             vertexIndex.put(vertex, vertices.size());
             vertices.add(vertex);
-            resizeMatrix();
+            resizeMatrixForAddition();
         }
     }
 
@@ -49,6 +49,8 @@ class AdjacencyMatrixGraph implements Graph {
     @Override
     public void removeVertex(String vertex) {
         if (vertexIndex.containsKey(vertex)) {
+            Map<String, Integer> oldVertexIndex = new HashMap<>(vertexIndex);
+
             int index = vertexIndex.get(vertex);
             vertexIndex.remove(vertex);
             vertices.remove(index);
@@ -57,21 +59,9 @@ class AdjacencyMatrixGraph implements Graph {
             for (int i = 0; i < vertices.size(); i++) {
                 vertexIndex.put(vertices.get(i), i);
             }
-            resizeMatrix();
-        }
-    }
 
-    /**
-     * Resizes the adjacency matrix when vertices are added or removed.
-     */
-    private void resizeMatrix() {
-        int size = vertices.size();
-        boolean[][] newMatrix = new boolean[size][size];
-
-        for (int i = 0; i < Math.min(size, matrix.length); i++) {
-            System.arraycopy(matrix[i], 0, newMatrix[i], 0, Math.min(size, matrix[i].length));
+            resizeMatrixForRemoval(oldVertexIndex);
         }
-        matrix = newMatrix;
     }
 
     /**
@@ -81,7 +71,6 @@ class AdjacencyMatrixGraph implements Graph {
         int size = vertices.size();
         boolean[][] newMatrix = new boolean[size][size];
 
-        // Copy existing connections to the new matrix
         for (int i = 0; i < Math.min(size, matrix.length); i++) {
             System.arraycopy(matrix[i], 0, newMatrix[i], 0, Math.min(size, matrix[i].length));
         }

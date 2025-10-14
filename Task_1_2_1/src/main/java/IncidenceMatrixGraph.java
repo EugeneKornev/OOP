@@ -38,7 +38,7 @@ class IncidenceMatrixGraph implements Graph {
         if (!vertexIndex.containsKey(vertex)) {
             vertexIndex.put(vertex, vertices.size());
             vertices.add(vertex);
-            oldResizeMatrix();
+            resizeMatrix();
         }
     }
 
@@ -69,32 +69,8 @@ class IncidenceMatrixGraph implements Graph {
             for (int i = 0; i < vertices.size(); i++) {
                 vertexIndex.put(vertices.get(i), i);
             }
-            oldResizeMatrix();
+            resizeMatrix();
         }
-    }
-
-
-    /**
-     * Resizes the incidence matrix when vertices or edges are added or removed.
-     */
-    private void oldResizeMatrix() {
-        int vertexCount = vertices.size();
-        int edgeCount = edges.size();
-        int[][] newMatrix = new int[vertexCount][edgeCount];
-
-        for (int i = 0; i < Math.min(vertexCount, matrix.length); i++) {
-            System.arraycopy(matrix[i], 0, newMatrix[i], 0, Math.min(edgeCount, matrix[i].length));
-        }
-
-        for (int j = 0; j < edgeCount; j++) {
-            Edge edge = edges.get(j);
-            int srcIndex = vertexIndex.get(edge.getSource());
-            int destIndex = vertexIndex.get(edge.getDestination());
-            newMatrix[srcIndex][j] = 1;
-            newMatrix[destIndex][j] = -1;
-        }
-
-        matrix = newMatrix;
     }
 
     /**
@@ -135,7 +111,7 @@ class IncidenceMatrixGraph implements Graph {
         Edge edge = new Edge(source, destination);
         if (!edges.contains(edge)) {
             edges.add(edge);
-            oldResizeMatrix();
+            resizeMatrix();
         }
     }
 
@@ -149,7 +125,7 @@ class IncidenceMatrixGraph implements Graph {
     public void removeEdge(String source, String destination) {
         Edge edge = new Edge(source, destination);
         if (edges.remove(edge)) {
-            oldResizeMatrix();
+            resizeMatrix();
         }
     }
 
