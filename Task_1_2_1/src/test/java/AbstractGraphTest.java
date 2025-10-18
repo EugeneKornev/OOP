@@ -147,17 +147,19 @@ abstract class AbstractGraphTest {
     @Test
     void testReadFromFile() throws IOException {
         Path testFile = tempDir.resolve("test_graph.txt");
-        List<String> lines = Arrays.asList("A B", "B C", "C D", "A C");
+        List<String> lines = Arrays.asList("A B", "B C", "C D", "A C", "E", "F");
         Files.write(testFile, lines);
 
         graph.readFromFile(testFile.toString());
 
-        assertEquals(4, graph.getVertexCount());
+        assertEquals(6, graph.getVertexCount());
         assertEquals(4, graph.getEdgeCount());
         assertTrue(graph.hasEdge("A", "B"));
         assertTrue(graph.hasEdge("B", "C"));
         assertTrue(graph.hasEdge("C", "D"));
         assertTrue(graph.hasEdge("A", "C"));
+        assertTrue(graph.hasVertex("E"));;
+        assertTrue(graph.hasVertex("F"));;
     }
 
     @Test
@@ -406,5 +408,37 @@ abstract class AbstractGraphTest {
         assertEquals(List.of("B"), graph.getNeighbors("A"));
         assertEquals(List.of("D"), graph.getNeighbors("B"));
         assertEquals(List.of(), graph.getNeighbors("D"));
+    }
+
+    @Test
+    void testEqualsImplementations() {
+        List<Graph> implementations = Arrays.asList(
+                new AdjacencyListGraph(),
+                new AdjacencyMatrixGraph(),
+                new IncidenceMatrixGraph()
+        );
+        for (int i = 0; i < implementations.size(); i++) {
+            for (int j = 0 ; j < implementations.size(); j++) {
+                Graph graph1 = implementations.get(i);
+                Graph graph2 = implementations.get(j);
+
+                graph1.addEdge("A", "B");
+                graph1.addEdge("A", "C");
+                graph1.addEdge("A", "D");
+                graph1.addEdge("B", "C");
+                graph1.addEdge("B", "D");
+                graph1.addEdge("C", "D");
+
+                graph2.addEdge("A", "B");
+                graph2.addEdge("A", "C");
+                graph2.addEdge("A", "D");
+                graph2.addEdge("B", "C");
+                graph2.addEdge("B", "D");
+                graph2.addEdge("C", "D");
+
+                assertEquals(graph1, graph2);
+            }
+        }
+
     }
 }

@@ -102,9 +102,14 @@ class AdjacencyListGraph implements Graph {
         adjacencyList.clear();
 
         for (String line : lines) {
+            if (line.trim().isEmpty()) {
+                continue;
+            }
             String[] parts = line.split("\\s+");
             if (parts.length == 2) {
                 addEdge(parts[0], parts[1]);
+            } else if (parts.length == 1) {
+                addVertex(parts[0]);
             }
         }
     }
