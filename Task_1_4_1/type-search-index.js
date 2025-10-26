@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"<Unnamed>","l":"AcademicRecord"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"<Unnamed>","l":"AssessmentType"},{"p":"<Unnamed>","l":"ElectronicGradeBook"},{"p":"<Unnamed>","l":"Grade"}];updateSearchResults();
