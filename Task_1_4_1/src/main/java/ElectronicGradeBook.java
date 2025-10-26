@@ -12,6 +12,7 @@ public class ElectronicGradeBook {
 
     /**
      * Constructs an electronic grade book.
+     *
      * @param isBudgetForm initial form of education (true for budget, false for paid)
      */
     public ElectronicGradeBook(boolean isBudgetForm) {
@@ -23,6 +24,7 @@ public class ElectronicGradeBook {
 
     /**
      * Adds an academic record to the grade book.
+     *
      * @param record the academic record to add
      */
     public void addRecord(AcademicRecord record) {
@@ -31,6 +33,7 @@ public class ElectronicGradeBook {
 
     /**
      * Sets the current semester.
+     *
      * @param semester current semester number
      */
     public void setCurrentSemester(int semester) {
@@ -39,6 +42,7 @@ public class ElectronicGradeBook {
 
     /**
      * Calculates the current average grade across all semesters.
+     *
      * @return current average grade as double
      */
     public double calculateCurrentAverage() {
@@ -60,6 +64,7 @@ public class ElectronicGradeBook {
 
     /**
      * Checks if student is possible to transfer from paid to budget form of education.
+     *
      * @return true if Possible for transfer, false otherwise
      */
     public boolean isPossibleForBudgetTransfer() {
@@ -85,6 +90,7 @@ public class ElectronicGradeBook {
 
     /**
      * Checks if student is Possible for honors diploma (red diploma).
+     *
      * @return true if Possible for honors diploma, false otherwise
      */
     public boolean isPossibleForHonorsDiploma() {
@@ -101,8 +107,8 @@ public class ElectronicGradeBook {
         }
 
         List<AcademicRecord> finalAssessments = records.stream()
-                .filter(record -> record.type() == AssessmentType.EXAM ||
-                        record.type() == AssessmentType.DIFFERENTIATED_CREDIT)
+                .filter(record -> record.type() == AssessmentType.EXAM
+                        || record.type() == AssessmentType.DIFFERENTIATED_CREDIT)
                 .toList();
 
         if (finalAssessments.isEmpty()) {
@@ -127,6 +133,7 @@ public class ElectronicGradeBook {
 
     /**
      * Checks if student is Possible for increased scholarship in current semester.
+     *
      * @return true if Possible for increased scholarship, false otherwise
      */
     public boolean isPossibleForIncreasedScholarship() {
@@ -148,6 +155,7 @@ public class ElectronicGradeBook {
 
     /**
      * Transfers student to budget form of education if Possible.
+     *
      * @return true if transfer was successful, false otherwise
      */
     public boolean transferToBudget() {
@@ -158,7 +166,34 @@ public class ElectronicGradeBook {
         return false;
     }
 
-    public List<AcademicRecord> getRecords() { return new ArrayList<>(records); }
-    public boolean isBudgetForm() { return isBudgetForm; }
-    public int getCurrentSemester() { return currentSemester; }
+
+    /**
+     * Returns a safe copy of all academic records stored in this grade book.
+     *
+     * @return a new ArrayList<AcademicRecord> containing all academic records
+     */
+    public List<AcademicRecord> getRecords() {
+        return new ArrayList<>(records);
+    }
+
+
+    /**
+     * Determines the current form of education for the student.
+     *
+     * @return true if the student is enrolled in budget-funded education,
+     * false if the student is on self-paid (contract) form
+     */
+    public boolean isBudgetForm() {
+        return isBudgetForm;
+    }
+
+
+    /**
+     * Gets the current academic semester the student is attending.
+     *
+     * @return the current semester number 
+     */
+    public int getCurrentSemester() {
+        return currentSemester;
+    }
 }
