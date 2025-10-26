@@ -76,8 +76,7 @@ class ElectronicGradeBookTest {
         gradeBook.addRecord(new AcademicRecord(
                 "Physics", Grade.GOOD, AssessmentType.EXAM, 3));
         gradeBook.addRecord(new AcademicRecord(
-                "Programming", Grade.SATISFACTORY, AssessmentType.DIFFERENTIATED_CREDIT, 3)); // Allowed in differentiated credits
-
+                "Programming", Grade.SATISFACTORY, AssessmentType.DIFFERENTIATED_CREDIT, 3)); 
         assertTrue(gradeBook.isPossibleForBudgetTransfer());
     }
 
@@ -138,7 +137,7 @@ class ElectronicGradeBookTest {
         gradeBook.addRecord(new AcademicRecord(
                 "Programming", Grade.EXCELLENT, AssessmentType.DIFFERENTIATED_CREDIT, 2));
         gradeBook.addRecord(new AcademicRecord(
-                "Algorithms", Grade.GOOD, AssessmentType.EXAM, 2)); // 1 good out of 4 = 75% excellent
+                "Algorithms", Grade.GOOD, AssessmentType.EXAM, 2)); 
         gradeBook.addRecord(new AcademicRecord(
                 "Thesis", Grade.EXCELLENT, AssessmentType.QUALIFICATION_WORK, 4));
 
