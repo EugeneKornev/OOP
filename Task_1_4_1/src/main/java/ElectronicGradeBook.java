@@ -170,7 +170,7 @@ public class ElectronicGradeBook {
     /**
      * Returns a safe copy of all academic records stored in this grade book.
      *
-     * @return a new ArrayList<AcademicRecord> containing all academic records
+     * @return a new ArrayList of AcademicRecord's containing all academic records
      */
     public List<AcademicRecord> getRecords() {
         return new ArrayList<>(records);
