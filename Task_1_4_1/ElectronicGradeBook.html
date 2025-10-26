@@ -118,13 +118,19 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCurrentSemester()" class="member-name-link">getCurrentSemester</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Gets the current academic semester the student is attending.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AcademicRecord.html" title="class in Unnamed Package">AcademicRecord</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRecords()" class="member-name-link">getRecords</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns a safe copy of all academic records stored in this grade book.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isBudgetForm()" class="member-name-link">isBudgetForm</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Determines the current form of education for the student.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPossibleForBudgetTransfer()" class="member-name-link">isPossibleForBudgetTransfer</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -267,18 +273,34 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getRecords()">
 <h3>getRecords</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="AcademicRecord.html" title="class in Unnamed Package">AcademicRecord</a>&gt;</span>&nbsp;<span class="element-name">getRecords</span>()</div>
+<div class="block">Returns a safe copy of all academic records stored in this grade book.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a new ArrayList of AcademicRecord's containing all academic records</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="isBudgetForm()">
 <h3>isBudgetForm</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isBudgetForm</span>()</div>
+<div class="block">Determines the current form of education for the student.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if the student is enrolled in budget-funded education,
+ false if the student is on self-paid (contract) form</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getCurrentSemester()">
 <h3>getCurrentSemester</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getCurrentSemester</span>()</div>
+<div class="block">Gets the current academic semester the student is attending.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the current semester number</dd>
+</dl>
 </section>
 </li>
 </ul>
