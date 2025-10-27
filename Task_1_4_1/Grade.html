@@ -106,9 +106,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Excellent grade with numeric value 5.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#GOOD" class="member-name-link">GOOD</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#FAIL" class="member-name-link">FAIL</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Fail grade for non-differentiated credits (no numeric value).</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#GOOD" class="member-name-link">GOOD</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Good grade with numeric value 4.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PASS" class="member-name-link">PASS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Pass grade for non-differentiated credits (no numeric value).</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#SATISFACTORY" class="member-name-link">SATISFACTORY</a></code></div>
 <div class="col-last even-row-color">
@@ -132,6 +140,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNumericValue()" class="member-name-link">getNumericValue</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the numeric value associated with this grade.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasNumericValue()" class="member-name-link">hasNumericValue</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Checks if this grade has a numeric value.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPassingGrade()" class="member-name-link">isPassingGrade</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Checks if this grade represents a passing grade.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="Grade.html" title="enum class in Unnamed Package">Grade</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -185,6 +203,20 @@ the order they are declared.</div>
 <div class="block">Satisfactory grade with numeric value 3.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="PASS">
+<h3>PASS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Grade.html" title="enum class in Unnamed Package">Grade</a></span>&nbsp;<span class="element-name">PASS</span></div>
+<div class="block">Pass grade for non-differentiated credits (no numeric value).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FAIL">
+<h3>FAIL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Grade.html" title="enum class in Unnamed Package">Grade</a></span>&nbsp;<span class="element-name">FAIL</span></div>
+<div class="block">Fail grade for non-differentiated credits (no numeric value).</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -232,6 +264,30 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the numeric value of the grade</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/UnsupportedOperationException.html" title="class or interface in java.lang" class="external-link">UnsupportedOperationException</a></code> - if called for PASS or FAIL grades</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hasNumericValue()">
+<h3>hasNumericValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasNumericValue</span>()</div>
+<div class="block">Checks if this grade has a numeric value.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if the grade has numeric value (EXCELLENT, GOOD, SATISFACTORY), false otherwise</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isPassingGrade()">
+<h3>isPassingGrade</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isPassingGrade</span>()</div>
+<div class="block">Checks if this grade represents a passing grade.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true for PASS, EXCELLENT, GOOD, SATISFACTORY; false for FAIL</dd>
 </dl>
 </section>
 </li>
