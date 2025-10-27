@@ -1,0 +1,231 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+/**
+ * Represents an electronic grade book for FIT students.
+ * Tracks student's academic performance and provides various academic calculations.
+ */
+public class ElectronicGradeBook {
+    private final List<AcademicRecord> records;
+    private boolean isBudgetForm;
+    private int currentSemester;
+
+    /**
+     * Constructs an electronic grade book.
+     *
+     * @param isBudgetForm initial form of education (true for budget, false for paid)
+     */
+    public ElectronicGradeBook(boolean isBudgetForm) {
+        this.records = new ArrayList<>();
+        this.isBudgetForm = isBudgetForm;
+        this.currentSemester = 1;
+    }
+
+
+    /**
+     * Adds an academic record to the grade book.
+     *
+     * @param record the academic record to add
+     */
+    public void addRecord(AcademicRecord record) {
+        records.add(record);
+    }
+
+    /**
+     * Sets the current semester.
+     *
+     * @param semester current semester number
+     */
+    public void setCurrentSemester(int semester) {
+        this.currentSemester = semester;
+    }
+
+    /**
+     * Calculates the current average grade across all semesters.
+     *
+     * @return current average grade as double
+     */
+    public double calculateCurrentAverage() {
+        if (records.isEmpty()) {
+            return 0.0;
+        }
+
+        var stats = records.stream()
+                .filter(record -> record.type() != AssessmentType.QUALIFICATION_WORK)
+                .filter(record -> record.grade().hasNumericValue())
+                .mapToInt(record -> record.grade().getNumericValue())
+                .summaryStatistics();
+
+        return stats.getCount() > 0 ? stats.getAverage() : 0.0;
+    }
+
+    /**
+     * Gets the latest grade for each subject (highest semester).
+     *
+     * @return map of subject name to latest academic record
+     */
+    private Map<String, AcademicRecord> getLatestGrades() {
+        return records.stream()
+                .collect(Collectors.toMap(
+                        AcademicRecord::subject,
+                        record -> record,
+                        (existing, replacement) ->
+                                replacement.semester() > existing.semester() ? replacement : existing
+                ));
+    }
+
+    /**
+     * Checks if student is possible to transfer from paid to budget form of education.
+     *
+     * @return true if possible for transfer, false otherwise
+     */
+    public boolean isPossibleForBudgetTransfer() {
+        if (isBudgetForm) {
+            return false;
+        }
+
+        if (currentSemester < 2) {
+            return false;
+        }
+
+        int lastSemester = currentSemester;
+        int previousSemester = currentSemester - 1;
+
+        boolean hasSatisfactoryInLastTwoSessions = records.stream()
+                .filter(record -> record.type() == AssessmentType.EXAM)
+                .filter(record -> record.semester() == lastSemester || record.semester() == previousSemester)
+                .anyMatch(record -> record.grade() == Grade.SATISFACTORY);
+
+        return !hasSatisfactoryInLastTwoSessions;
+    }
+
+    /**
+     * Checks if student is Possible for honors diploma (red diploma).
+     *
+     * @return true if Possible for honors diploma, false otherwise
+     */
+    public boolean isPossibleForHonorsDiploma() {
+        if (records.isEmpty()) {
+            return false;
+        }
+
+        boolean allCreditsPassed = records.stream()
+                .filter(record -> record.type() == AssessmentType.CREDIT)
+                .allMatch(record -> record.grade().isPassingGrade());
+
+        if (!allCreditsPassed) {
+            return false;
+        }
+
+        boolean hasExcellentQualificationWork = records.stream()
+                .filter(record -> record.type() == AssessmentType.QUALIFICATION_WORK)
+                .anyMatch(record -> record.grade() == Grade.EXCELLENT);
+
+        if (!hasExcellentQualificationWork) {
+            return false;
+        }
+
+        Map<String, AcademicRecord> latestGrades = getLatestGrades();
+
+        List<AcademicRecord> finalAssessments = latestGrades.values().stream()
+                .filter(record -> record.type() == AssessmentType.EXAM ||
+                        record.type() == AssessmentType.DIFFERENTIATED_CREDIT)
+                .toList();
+
+        if (finalAssessments.isEmpty()) {
+            return false;
+        }
+
+        boolean hasSatisfactory = finalAssessments.stream()
+                .anyMatch(record -> record.grade() == Grade.SATISFACTORY);
+
+        if (hasSatisfactory) {
+            return false;
+        }
+
+        long excellentCount = finalAssessments.stream()
+                .filter(record -> record.grade() == Grade.EXCELLENT)
+                .count();
+
+        double excellentPercentage = (double) excellentCount / finalAssessments.size();
+
+        return excellentPercentage >= 0.75;
+    }
+
+    /**
+     * Checks if student is Possible for increased scholarship in current semester.
+     *
+     * @return true if Possible for increased scholarship, false otherwise
+     */
+    public boolean isPossibleForIncreasedScholarship() {
+        if (!isBudgetForm) {
+            return false;
+        }
+
+        List<AcademicRecord> currentSemesterRecords = records.stream()
+                .filter(record -> record.semester() == currentSemester)
+                .toList();
+
+        if (currentSemesterRecords.isEmpty()) {
+            return false;
+        }
+
+        boolean allCreditsPassed = currentSemesterRecords.stream()
+                .filter(record -> record.type() == AssessmentType.CREDIT)
+                .allMatch(record -> record.grade().isPassingGrade());
+
+        if (!allCreditsPassed) {
+            return false;
+        }
+
+        return currentSemesterRecords.stream()
+                .filter(record -> record.grade().hasNumericValue())
+                .allMatch(record -> record.grade() == Grade.EXCELLENT);
+    }
+
+    /**
+     * Transfers student to budget form of education if Possible.
+     *
+     * @return true if transfer was successful, false otherwise
+     */
+    public boolean transferToBudget() {
+        if (isPossibleForBudgetTransfer()) {
+            isBudgetForm = true;
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Returns a safe copy of all academic records stored in this grade book.
+     *
+     * @return a new ArrayList of AcademicRecord's containing all academic records
+     */
+    public List<AcademicRecord> getRecords() {
+        return new ArrayList<>(records);
+    }
+
+
+    /**
+     * Determines the current form of education for the student.
+     *
+     * @return true if the student is enrolled in budget-funded education,
+     * false if the student is on self-paid (contract) form
+     */
+    public boolean isBudgetForm() {
+        return isBudgetForm;
+    }
+
+
+    /**
+     * Gets the current academic semester the student is attending.
+     *
+     * @return the current semester number 
+     */
+    public int getCurrentSemester() {
+        return currentSemester;
+    }
+}
