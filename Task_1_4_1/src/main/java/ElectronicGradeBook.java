@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Represents an electronic grade book for FIT students.
@@ -50,22 +52,34 @@ public class ElectronicGradeBook {
             return 0.0;
         }
 
-        double sum = records.stream()
+        var stats = records.stream()
                 .filter(record -> record.type() != AssessmentType.QUALIFICATION_WORK)
+                .filter(record -> record.grade().hasNumericValue())
                 .mapToInt(record -> record.grade().getNumericValue())
-                .sum();
+                .summaryStatistics();
 
-        long count = records.stream()
-                .filter(record -> record.type() != AssessmentType.QUALIFICATION_WORK)
-                .count();
+        return stats.getCount() > 0 ? stats.getAverage() : 0.0;
+    }
 
-        return count > 0 ? sum / count : 0.0;
+    /**
+     * Gets the latest grade for each subject (highest semester).
+     *
+     * @return map of subject name to latest academic record
+     */
+    private Map<String, AcademicRecord> getLatestGrades() {
+        return records.stream()
+                .collect(Collectors.toMap(
+                        AcademicRecord::subject,
+                        record -> record,
+                        (existing, replacement) ->
+                                replacement.semester() > existing.semester() ? replacement : existing
+                ));
     }
 
     /**
      * Checks if student is possible to transfer from paid to budget form of education.
      *
-     * @return true if Possible for transfer, false otherwise
+     * @return true if possible for transfer, false otherwise
      */
     public boolean isPossibleForBudgetTransfer() {
         if (isBudgetForm) {
@@ -73,7 +87,7 @@ public class ElectronicGradeBook {
         }
 
         if (currentSemester < 2) {
-            return false; // Need at least two semesters
+            return false;
         }
 
         int lastSemester = currentSemester;
@@ -81,8 +95,7 @@ public class ElectronicGradeBook {
 
         boolean hasSatisfactoryInLastTwoSessions = records.stream()
                 .filter(record -> record.type() == AssessmentType.EXAM)
-                .filter(record -> record.semester() == lastSemester
-                        || record.semester() == previousSemester)
+                .filter(record -> record.semester() == lastSemester || record.semester() == previousSemester)
                 .anyMatch(record -> record.grade() == Grade.SATISFACTORY);
 
         return !hasSatisfactoryInLastTwoSessions;
@@ -98,6 +111,14 @@ public class ElectronicGradeBook {
             return false;
         }
 
+        boolean allCreditsPassed = records.stream()
+                .filter(record -> record.type() == AssessmentType.CREDIT)
+                .allMatch(record -> record.grade().isPassingGrade());
+
+        if (!allCreditsPassed) {
+            return false;
+        }
+
         boolean hasExcellentQualificationWork = records.stream()
                 .filter(record -> record.type() == AssessmentType.QUALIFICATION_WORK)
                 .anyMatch(record -> record.grade() == Grade.EXCELLENT);
@@ -106,9 +127,11 @@ public class ElectronicGradeBook {
             return false;
         }
 
-        List<AcademicRecord> finalAssessments = records.stream()
-                .filter(record -> record.type() == AssessmentType.EXAM
-                        || record.type() == AssessmentType.DIFFERENTIATED_CREDIT)
+        Map<String, AcademicRecord> latestGrades = getLatestGrades();
+
+        List<AcademicRecord> finalAssessments = latestGrades.values().stream()
+                .filter(record -> record.type() == AssessmentType.EXAM ||
+                        record.type() == AssessmentType.DIFFERENTIATED_CREDIT)
                 .toList();
 
         if (finalAssessments.isEmpty()) {
@@ -149,7 +172,16 @@ public class ElectronicGradeBook {
             return false;
         }
 
+        boolean allCreditsPassed = currentSemesterRecords.stream()
+                .filter(record -> record.type() == AssessmentType.CREDIT)
+                .allMatch(record -> record.grade().isPassingGrade());
+
+        if (!allCreditsPassed) {
+            return false;
+        }
+
         return currentSemesterRecords.stream()
+                .filter(record -> record.grade().hasNumericValue())
                 .allMatch(record -> record.grade() == Grade.EXCELLENT);
     }
 

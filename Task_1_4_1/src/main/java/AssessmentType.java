@@ -1,3 +1,4 @@
+
 /**
  * Enum representing different types of academic assessment.
  */
@@ -12,6 +13,12 @@ public enum AssessmentType {
      * Differentiated credits have grade distinctions (excellent, good, satisfactory).
      */
     DIFFERENTIATED_CREDIT,
+
+    /**
+     * Represents a regular (non-differentiated) credit assessment type.
+     * Regular credits are pass/fail only (e.g., physical education).
+     */
+    CREDIT,
 
     /**
      * Represents qualification work such as thesis or diploma project.

@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -231,7 +232,7 @@ class ElectronicGradeBookTest {
         var records = gradeBook.getRecords();
         assertEquals(1, records.size());
 
-        records.clear(); // doesn't affect on the original List
+        records.clear();
         assertEquals(1, gradeBook.getRecords().size());
     }
 
@@ -251,5 +252,47 @@ class ElectronicGradeBookTest {
         assertEquals(Grade.GOOD, record.grade());
         assertEquals(AssessmentType.DIFFERENTIATED_CREDIT, record.type());
         assertEquals(3, record.semester());
+    }
+
+    @Test
+    void testGradeHasNumericValue() {
+        assertTrue(Grade.EXCELLENT.hasNumericValue());
+        assertTrue(Grade.GOOD.hasNumericValue());
+        assertTrue(Grade.SATISFACTORY.hasNumericValue());
+        assertFalse(Grade.PASS.hasNumericValue());
+        assertFalse(Grade.FAIL.hasNumericValue());
+    }
+
+    @Test
+    void testGradeGetNumericValueThrowsForPassFail() {
+        assertThrows(UnsupportedOperationException.class, Grade.PASS::getNumericValue);
+        assertThrows(UnsupportedOperationException.class, Grade.FAIL::getNumericValue);
+    }
+
+    @Test
+    void testCalculateCurrentAverage_ExcludesCredits() {
+        gradeBook.addRecord(new AcademicRecord("Math", Grade.EXCELLENT, AssessmentType.EXAM, 1));
+        gradeBook.addRecord(new AcademicRecord("PE", Grade.PASS, AssessmentType.CREDIT, 1));
+
+        assertEquals(5.0, gradeBook.calculateCurrentAverage());
+    }
+
+    @Test
+    void testIsPossibleForHonorsDiploma_WithCredits() {
+        gradeBook.addRecord(new AcademicRecord("Math", Grade.EXCELLENT, AssessmentType.EXAM, 1));
+        gradeBook.addRecord(new AcademicRecord("Physics", Grade.EXCELLENT, AssessmentType.EXAM, 1));
+        gradeBook.addRecord(new AcademicRecord("PE", Grade.PASS, AssessmentType.CREDIT, 1));
+        gradeBook.addRecord(new AcademicRecord("Thesis", Grade.EXCELLENT, AssessmentType.QUALIFICATION_WORK, 4));
+
+        assertTrue(gradeBook.isPossibleForHonorsDiploma());
+    }
+
+    @Test
+    void testIsPossibleForHonorsDiploma_FailedCredit() {
+        gradeBook.addRecord(new AcademicRecord("Math", Grade.EXCELLENT, AssessmentType.EXAM, 1));
+        gradeBook.addRecord(new AcademicRecord("PE", Grade.FAIL, AssessmentType.CREDIT, 1));
+        gradeBook.addRecord(new AcademicRecord("Thesis", Grade.EXCELLENT, AssessmentType.QUALIFICATION_WORK, 4));
+
+        assertFalse(gradeBook.isPossibleForHonorsDiploma());
     }
 }
